@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <title>IAAPA 2026 Build Plan</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f6f3">
 <style>
 :root{--bg:#f6f6f3;--card:#fff;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bad:#dc2626;--warn:#b45309;--ok:#15803d;--label:250px}
 *{box-sizing:border-box}
@@ -49,7 +50,9 @@ ul.warn a{color:inherit;font-weight:600}
 .day{margin-bottom:22px}
 .dayhead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:6px}
 .dayhead span{font-size:12.5px;color:var(--mut)}
-.grid{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.gwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px}
+.grid{background:#fff;min-width:calc(var(--label) + var(--nh) * 46px)}
+.glabel{position:sticky;left:0;z-index:4;background:#fff}
 .grow{display:flex;border-top:1px solid var(--line);min-height:40px}
 .grow:first-child{border-top:none}
 .glabel{width:var(--label);flex:none;padding:5px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;font-size:12.5px;cursor:pointer}
@@ -105,11 +108,61 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
 .menu .pin.on,.menu .pin:hover{opacity:1}
 .two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin:12px 24px}
 .two section{margin:0}
-.ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:16px}
 .ps h3{margin-bottom:6px}
 .chip{display:inline-block;border-left:4px solid var(--c);background:#f8fafc;border-radius:4px;padding:1px 6px;margin:2px 2px 2px 0;font-size:12px;white-space:nowrap}
 .addrow{margin-top:8px}
 @media (max-width:900px){.two{grid-template-columns:1fr}:root{--label:170px}}
+@media (hover:none){ .bar{touch-action:pan-x pan-y;cursor:pointer} .bar .rz{display:none} }
+@media (max-width:760px){
+  :root{--label:118px}
+  body{font-size:15px}
+  header{padding:14px 12px 4px;align-items:flex-start}
+  h1{font-size:19px}
+  .sub{font-size:12.5px}
+  .actions{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+  .actions button{flex:none;padding:8px 12px}
+  .note{margin:6px 12px 0}
+  section{margin:10px 8px;padding:12px;border-radius:10px}
+  section.bare{margin:10px 8px}
+  .two{margin:10px 8px;gap:10px}
+  .cards{grid-template-columns:1fr 1fr;gap:8px}
+  .card{padding:10px}
+  .card .big{font-size:19px}
+  .card .ln{font-size:12px}
+  .dayhead h3{font-size:14px}
+  .glabel{padding:4px 6px;font-size:11.5px}
+  .glabel span{font-size:10.5px}
+  .bar{font-size:11px}
+  .legend{gap:8px 12px;font-size:11px}
+  /* tables become cards */
+  table.cardtable, table.cardtable tbody{display:block;width:100%}
+  table.cardtable thead{display:none}
+  table.cardtable tr.dayrow{display:block}
+  table.cardtable tr.dayrow td{display:block;padding:12px 2px 4px;background:none;border:none;font-size:15px}
+  table.cardtable tr.dayrow span{display:block;margin:2px 0 0}
+  table.cardtable tr[data-id], table.cardtable tr[data-cid], table.cardtable tr[data-did]{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;padding:10px;margin:8px 0;border:1px solid var(--line);border-left:5px solid var(--c,#cbd5e1);border-radius:10px;background:#fff}
+  table.cardtable td{display:flex;flex-direction:column;border:none;padding:0;min-width:0!important}
+  table.cardtable td[data-l]::before{content:attr(data-l);font-size:10.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.03em;font-weight:600;margin-bottom:1px}
+  table.cardtable td.wide{grid-column:1/-1}
+  table.cardtable td.swc{display:none}
+  table.cardtable td.c{align-items:flex-start}
+  table.cardtable td.dayc{flex-direction:row;align-items:center;gap:6px}
+  table.cardtable td.dayc::before{margin:0}
+  table.cardtable td.tname input{font-weight:600}
+  table.cardtable td.acts{flex-direction:row;gap:6px;justify-content:flex-end}
+  table.cardtable td.acts button{padding:6px 12px;font-size:13px}
+  input,select{font-size:16px;border-color:var(--line);background:#fff;padding:7px 8px}
+  input.num,input[type=time]{width:100%}
+  input[type=checkbox]{width:22px;height:22px}
+  details.crewpick{min-width:0}
+  details.crewpick summary{border-color:var(--line);background:#fff;padding:8px;font-size:14px}
+  details.crewpick[open] .menu{position:fixed;left:8px;right:8px;bottom:8px;top:auto;max-height:60vh;min-width:0;z-index:50;padding:10px}
+  .menu label{padding:8px 6px;font-size:15px}
+  .menu .pin{font-size:18px;padding:0 6px}
+  .ps table td{font-size:13px}
+  ul.warn li{font-size:13.5px}
+}
 @media print{
   .actions,.note,.acts,.addrow,button{display:none!important}
   body{background:#fff}
@@ -154,7 +207,7 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
 <section>
   <h2>Tasks</h2>
   <div class="tablewrap">
-    <table>
+    <table class="cardtable">
       <thead><tr><th></th><th>Task</th><th>Day</th><th>Area</th><th>Start</th><th>Hrs</th><th>Ends</th><th>People</th><th title="People × hours">P-hrs</th><th>Follows</th><th>Crew</th><th class="c" title="Shared / on-and-off: doesn't count toward peak headcount and doesn't block the person from other tasks">Shared</th><th>Notes</th><th></th></tr></thead>
       <tbody id="taskBody"></tbody>
     </table>
@@ -165,12 +218,12 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
 <div class="two">
   <section>
     <h2>Crew &amp; availability</h2>
-    <div class="tablewrap"><table><thead id="crewHead"></thead><tbody id="crewBody"></tbody></table></div>
+    <div class="tablewrap"><table class="cardtable"><thead id="crewHead"></thead><tbody id="crewBody"></tbody></table></div>
     <div class="addrow"><button id="addCrew">+ Add person</button></div>
   </section>
   <section>
     <h2>Build days &amp; hall hours</h2>
-    <div class="tablewrap"><table><thead><tr><th>Label</th><th>Date</th><th>Open</th><th>Close</th><th>Notes</th><th></th></tr></thead><tbody id="dayBody"></tbody></table></div>
+    <div class="tablewrap"><table class="cardtable"><thead><tr><th>Label</th><th>Date</th><th>Open</th><th>Close</th><th>Notes</th><th></th></tr></thead><tbody id="dayBody"></tbody></table></div>
     <div class="addrow"><button id="addDay">+ Add day</button></div>
   </section>
 </div>
@@ -925,11 +978,11 @@ function renderGantt(){
     const maxN = Math.max(P.peak, av, 1);
     const mp = P.slots.map(x => `<div class="mp ${x.n>x.a?'over':''}" style="left:${pct(x.m)}%;width:${30/span*100}%;height:${x.n/maxN*100}%" title="${fmt(x.m)}: ${x.n} needed / ${x.a} on site">${x.n||''}</div><div class="avtick" style="left:${pct(x.m)}%;width:${30/span*100}%;bottom:${x.a/maxN*100}%"></div>`).join('');
     out += `<div class="day"><div class="dayhead"><h3>${esc(d.label)} — ${dateLabel(d.date)}</h3><span>Hall ${fmt(toMin(d.start))}–${fmt(toMin(d.end))} · ${av} on site · peak need ${P.peak}${P.short>0?` <b class="bad">(short ${P.short} at ${fmt(P.worst.m)})</b>`:''}${d.note?' · '+esc(d.note):''}</span></div>
-      <div class="grid" style="--hw:${100/nh}%">
+      <div class="gwrap"><div class="grid" style="--hw:${100/nh}%;--nh:${nh}">
         <div class="grow"><div class="glabel" style="cursor:default"></div><div class="gtrack hours">${hours}</div></div>
         ${rows || '<div class="grow"><div class="glabel mut">No tasks yet</div><div class="gtrack"></div></div>'}
         <div class="grow mprow"><div class="glabel"><b>People needed</b><span>${av} on site</span></div><div class="gtrack mptrack">${shade}${mp}</div></div>
-      </div></div>`;
+      </div></div></div>`;
   });
   $('#gantt').innerHTML = out;
 }
@@ -957,21 +1010,21 @@ function renderTasks(){
     h += `<tr class="dayrow"><td colspan="14">${esc(d.label)} — ${dateLabel(d.date)}<span>${ts.length} tasks · ${personHours(ts)} person-hrs · ${crewOn(d.id).length} on site</span></td></tr>`;
     ts.forEach(t => {
       const n = need(t), over = tEnd(t) > toMin(d.end);
-      h += `<tr data-id="${t.id}" id="row-${t.id}">
-        <td><span class="sw" style="background:${AREAS[t.area]||'#64748b'}"></span></td>
-        <td style="min-width:190px"><input data-f="name" value="${esc(t.name)}"></td>
-        <td><select data-f="day">${S.days.map(x => `<option value="${x.id}" ${x.id===t.day?'selected':''}>${shortDay(x.id)}</option>`).join('')}</select></td>
-        <td><select data-f="area">${Object.keys(AREAS).map(k => `<option ${k===t.area?'selected':''}>${k}</option>`).join('')}</select></td>
-        <td><input type="time" step="900" data-f="start" value="${esc(t.start)}"></td>
-        <td><input type="number" min="0.25" step="0.25" data-f="hours" value="${t.hours}" class="num"></td>
-        <td class="end ${over?'bad':''}">${fmt(tEnd(t))}</td>
-        <td><select data-f="people">${peopleOpts(t.people)}</select></td>
-        <td class="mut">${fmtH(n*t.hours)}</td>
-        <td style="min-width:150px"><select data-f="after"><option value="">—</option>${S.tasks.filter(x => x.id!==t.id).map(x => `<option value="${x.id}" ${x.id===t.after?'selected':''}>${shortDay(x.day)} · ${esc(x.name)}</option>`).join('')}</select></td>
-        <td>${crewPicker(t)}</td>
-        <td class="c"><input type="checkbox" data-f="flex" ${t.flex?'checked':''}></td>
-        <td style="min-width:220px"><input data-f="notes" value="${esc(t.notes)}" title="${esc(t.notes)}"></td>
-        <td class="acts">${over?'<button data-act="split" title="Move the hours past close onto the next day">Split ✂</button> ':''}<button data-act="up" title="Move up">↑</button><button data-act="down" title="Move down">↓</button><button data-act="del" title="Delete">✕</button></td>
+      h += `<tr data-id="${t.id}" id="row-${t.id}" style="--c:${AREAS[t.area]||'#64748b'}">
+        <td class="swc"><span class="sw" style="background:${AREAS[t.area]||'#64748b'}"></span></td>
+        <td class="wide tname" data-l="Task" style="min-width:190px"><input data-f="name" value="${esc(t.name)}"></td>
+        <td data-l="Day"><select data-f="day">${S.days.map(x => `<option value="${x.id}" ${x.id===t.day?'selected':''}>${shortDay(x.id)}</option>`).join('')}</select></td>
+        <td data-l="Area"><select data-f="area">${Object.keys(AREAS).map(k => `<option ${k===t.area?'selected':''}>${k}</option>`).join('')}</select></td>
+        <td data-l="Start"><input type="time" step="900" data-f="start" value="${esc(t.start)}"></td>
+        <td data-l="Hours"><input type="number" min="0.25" step="0.25" data-f="hours" value="${t.hours}" class="num"></td>
+        <td data-l="Ends" class="end ${over?'bad':''}">${fmt(tEnd(t))}</td>
+        <td data-l="People"><select data-f="people">${peopleOpts(t.people)}</select></td>
+        <td data-l="Person-hrs" class="mut">${fmtH(n*t.hours)}</td>
+        <td class="wide" data-l="Follows" style="min-width:150px"><select data-f="after"><option value="">—</option>${S.tasks.filter(x => x.id!==t.id).map(x => `<option value="${x.id}" ${x.id===t.after?'selected':''}>${shortDay(x.day)} · ${esc(x.name)}</option>`).join('')}</select></td>
+        <td class="wide" data-l="Crew">${crewPicker(t)}</td>
+        <td class="c" data-l="Shared"><input type="checkbox" data-f="flex" ${t.flex?'checked':''}></td>
+        <td class="wide" data-l="Notes" style="min-width:220px"><input data-f="notes" value="${esc(t.notes)}" title="${esc(t.notes)}"></td>
+        <td class="acts wide">${over?'<button data-act="split" title="Move the hours past close onto the next day">Split ✂</button> ':''}<button data-act="up" title="Move up">↑</button><button data-act="down" title="Move down">↓</button><button data-act="del" title="Delete">✕</button></td>
       </tr>`;
     });
   });
@@ -980,22 +1033,22 @@ function renderTasks(){
 function renderCrew(){
   $('#crewHead').innerHTML = `<tr><th>Name</th><th>Role</th>${S.days.map(d => `<th class="c" title="${esc(d.label)}">${shortDay(d.id)}<br><span style="font-weight:400;text-transform:none">${dateLabel(d.date).replace(/^\w+, /,'')}</span></th>`).join('')}<th title="Arrival time on their first day on site (blank = there when the hall opens)">Arrives</th><th>Only for task</th><th>Notes</th><th></th></tr>`;
   $('#crewBody').innerHTML = S.crew.map(c => `<tr data-cid="${c.id}">
-    <td style="min-width:150px"><input data-cf="name" value="${esc(c.name)}"></td>
-    <td style="min-width:150px"><input data-cf="role" value="${esc(c.role)}"></td>
-    ${S.days.map(d => `<td class="c"><input type="checkbox" data-day="${d.id}" ${c.days[d.id]?'checked':''}></td>`).join('')}
-    <td><input type="time" step="900" data-cf="from" value="${esc(c.from||'')}"></td>
-    <td><select data-cf="only"><option value="">Any task</option>${S.tasks.map(t => `<option value="${t.id}" ${c.only===t.id?'selected':''}>${shortDay(t.day)} · ${esc(t.name)}</option>`).join('')}</select></td>
-    <td style="min-width:160px"><input data-cf="notes" value="${esc(c.notes)}" title="${esc(c.notes)}"></td>
-    <td class="acts"><button data-cact="del" title="Remove">✕</button></td></tr>`).join('');
+    <td class="wide tname" data-l="Name" style="min-width:150px"><input data-cf="name" value="${esc(c.name)}"></td>
+    <td class="wide" data-l="Role" style="min-width:150px"><input data-cf="role" value="${esc(c.role)}"></td>
+    ${S.days.map(d => `<td class="c dayc" data-l="${shortDay(d.id)}"><input type="checkbox" data-day="${d.id}" ${c.days[d.id]?'checked':''}></td>`).join('')}
+    <td data-l="Arrives"><input type="time" step="900" data-cf="from" value="${esc(c.from||'')}"></td>
+    <td data-l="Only for"><select data-cf="only"><option value="">Any task</option>${S.tasks.map(t => `<option value="${t.id}" ${c.only===t.id?'selected':''}>${shortDay(t.day)} · ${esc(t.name)}</option>`).join('')}</select></td>
+    <td class="wide" data-l="Notes" style="min-width:160px"><input data-cf="notes" value="${esc(c.notes)}" title="${esc(c.notes)}"></td>
+    <td class="acts wide"><button data-cact="del" title="Remove">✕</button></td></tr>`).join('');
 }
 function renderDays(){
   $('#dayBody').innerHTML = S.days.map(d => `<tr data-did="${d.id}">
-    <td style="min-width:150px"><input data-df="label" value="${esc(d.label)}"></td>
-    <td><input type="date" data-df="date" value="${esc(d.date)}"></td>
-    <td><input type="time" step="900" data-df="start" value="${esc(d.start)}"></td>
-    <td><input type="time" step="900" data-df="end" value="${esc(d.end)}"></td>
-    <td style="min-width:160px"><input data-df="note" value="${esc(d.note)}" title="${esc(d.note)}"></td>
-    <td class="acts"><button data-dact="del" title="Remove day">✕</button></td></tr>`).join('');
+    <td class="wide tname" data-l="Label" style="min-width:150px"><input data-df="label" value="${esc(d.label)}"></td>
+    <td data-l="Date"><input type="date" data-df="date" value="${esc(d.date)}"></td>
+    <td data-l="Open"><input type="time" step="900" data-df="start" value="${esc(d.start)}"></td>
+    <td data-l="Close"><input type="time" step="900" data-df="end" value="${esc(d.end)}"></td>
+    <td class="wide" data-l="Notes" style="min-width:160px"><input data-df="note" value="${esc(d.note)}" title="${esc(d.note)}"></td>
+    <td class="acts wide"><button data-dact="del" title="Remove day">✕</button></td></tr>`).join('');
 }
 function renderPeople(){
   $('#people').innerHTML = S.days.map(d => {
@@ -1151,7 +1204,16 @@ $('#btnCsv').onclick = () => {
 /* drag & resize bars */
 let drag = null;
 const gantt = $('#gantt');
+let lastPointer = 'mouse';
+gantt.addEventListener('click', e => {
+  if (lastPointer !== 'touch') return;
+  const bar = e.target.closest('.bar'); if (!bar) return;
+  const row = document.getElementById('row-' + bar.dataset.id);
+  if (row){ row.scrollIntoView({behavior:'smooth', block:'center'}); row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); }
+});
 gantt.addEventListener('pointerdown', e => {
+  lastPointer = e.pointerType || 'mouse';
+  if (lastPointer === 'touch') return;          // on phones: tap a bar to jump to its card; scrolling stays smooth
   const bar = e.target.closest('.bar'); if (!bar) return;
   const t = taskById(bar.dataset.id), P = profile(t.day), track = bar.parentElement;
   drag = {t, bar, mode: e.target.classList.contains('rz') ? 'rz' : 'mv', x0: e.clientX, start0: tStart(t), hours0: Number(t.hours), span: P.e - P.s, s: P.s, w: track.getBoundingClientRect().width, moved: false};
