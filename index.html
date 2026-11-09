@@ -127,10 +127,9 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
     <button id="btnSave" class="primary">Save copy (.html)</button>
   </div>
 </header>
-<div class="note"><span id="dirty"></span>Edit anything below — drag bars to move them, drag a bar's right edge to change hours. Edits live in this page until you click <b>Save copy</b>, which downloads a new .html with your changes built in.</div>
+<div class="note"><span id="dirty"></span><a href="#warnings" id="issueLink"></a> Edit anything below — drag bars to move them, drag a bar's right edge to change hours. Edits live in this page until you click <b>Save copy</b>, which downloads a new .html with your changes built in.</div>
 
 <section class="bare"><div id="summary" class="cards"></div></section>
-<section id="warnings"></section>
 
 <section>
   <h2>Timeline</h2>
@@ -175,14 +174,16 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   <div id="people" class="ps"></div>
 </section>
 
+<section id="warnings"></section>
+
 <script id="plan-data" type="application/json">
 {
  "title":"IAAPA Expo 2026 — Build Plan & Manpower",
  "firstRun":true,
  "days":[
-  {"id":"d1","label":"Day 1 — Build","date":"2026-11-14","start":"08:00","end":"20:00","note":"West Hall move-in Sat 8a–8p. W1359 variance approved for 8 AM."},
-  {"id":"d2","label":"Day 2 — Finish build, tech & test","date":"2026-11-15","start":"08:00","end":"20:00","note":"All setup done by Sunday night. Confirm OCCC Sunday hall hours."},
-  {"id":"d3","label":"Day 3 — Sales spaces & training","date":"2026-11-16","start":"08:00","end":"20:00","note":"Show crew arrives today. Confirm Monday hall hours. Show opens Tue Nov 17."}
+  {"id":"d1","label":"Saturday — Build","date":"2026-11-14","start":"08:00","end":"20:00","note":"West Hall move-in Sat 8a–8p. W1359 variance approved for 8 AM."},
+  {"id":"d2","label":"Sunday — Finish build, tech & test","date":"2026-11-15","start":"08:00","end":"20:00","note":"All setup done by Sunday night. Confirm OCCC Sunday hall hours."},
+  {"id":"d3","label":"Monday — Final tech, sales spaces & training","date":"2026-11-16","start":"08:00","end":"20:00","note":"Show crew arrives today. Confirm Monday hall hours. Show opens Tue Nov 17."}
  ],
  "crew":[
   {"id":"c1","name":"Patrick Kronfli","role":"Production lead","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Truck crew — in Orlando Friday"},
@@ -204,7 +205,7 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
  "tasks":[
   {"id":"t1","day":"d1","name":"Unloading","area":"Both","start":"08:00","hours":2,"people":4,"after":"","assigned":[],"flex":false,"notes":"Box truck + turf U-Haul. GES forklift / material handling."},
   {"id":"t2","day":"d1","name":"Turf & electrical setup","area":"Both","start":"10:00","hours":2,"people":3,"after":"t1","assigned":[],"flex":false,"notes":"4 rolls 15×20 (+9×10 spare). W1359 outlet at center; W1455 2 outlets back-right."},
-  {"id":"t3","day":"d1","name":"Sign setup","area":"W1455","start":"12:00","hours":2,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"20' ring, 245 lb. GES worker booked 9:00 AM — move this task or the GES time. OCCC rigging hangs it; must be up before the dome."},
+  {"id":"t3","day":"d1","name":"Sign setup","area":"W1455","start":"12:00","hours":2,"people":3,"after":"t2","assigned":["c1","c4","cg"],"pinned":["c1","c4","cg"],"flex":false,"notes":"Patrick + Kyler + GES worker (locked). 20' ring, 245 lb. GES worker booked 9:00 AM — move this task or the GES time. OCCC rigging hangs it; must be up before the dome."},
   {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":8,"people":3,"after":"t2","assigned":["c2","c5"],"pinned":["c2","c5"],"flex":false,"notes":"2 shooting bays, Jason + Obe locked on Battle Bay. 2 shooting bays, 6' × 12'6\" × 8'3\". 12 hrs total — 8 Sat, 4 Sun."},
   {"id":"t5","day":"d1","name":"Demo Arena setup","area":"W1359","start":"12:00","hours":6,"people":2,"after":"t2","assigned":[],"flex":false,"notes":"Netted arena, frame, bunkers."},
   {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":6,"people":2,"after":"t3","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Tarun locked on dome. Goes in under the hung sign. 12 hrs total — 6 Sat, 6 Sun."},
@@ -214,6 +215,7 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"12:00","hours":5,"people":1,"after":"t4b","assigned":[],"flex":false,"notes":""},
   {"id":"t9","day":"d2","name":"Demo Arena testing","area":"W1359","start":"08:00","hours":2,"people":1,"after":"t5","assigned":[],"flex":false,"notes":""},
   {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"14:00","hours":5,"people":2,"after":"t6b","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":""},
+  {"id":"t13","day":"d3","name":"Final tech setup","area":"Both","start":"08:00","hours":4,"people":2,"after":"","assigned":[],"flex":false,"notes":"Final tech pass on Battle Bay, Demo Arena + dome. Hours/people are a placeholder — adjust."},
   {"id":"t11","day":"d3","name":"Sales spaces setup & booth beautification","area":"Both","start":"08:00","hours":10,"people":3,"after":"","assigned":["c12","c13","c10"],"pinned":["c12","c13","c10"],"flex":false,"notes":"Cherryll, Marcie + Brenda (locked). Lounge, check-in podium, TVs, furniture, merch, beautifying both booths. Confirm they land early Monday."},
   {"id":"t12","day":"d3","name":"Training","area":"Team","start":"18:00","hours":3,"people":"all","after":"t11","assigned":[],"flex":false,"notes":"Everyone on site. Move earlier once show-crew flights are known."}
  ]
@@ -235,7 +237,7 @@ const uid = p => p + Math.random().toString(36).slice(2,8);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dayOf = id => S.days.find(d => d.id === id);
 const dayIdx = id => S.days.findIndex(d => d.id === id);
-const shortDay = id => 'D' + (dayIdx(id) + 1);
+const shortDay = id => { const d = dayOf(id); try { if (d && d.date) return new Date(d.date + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short'}); } catch(e){} return 'D' + (dayIdx(id) + 1); };
 const crewOn = dayId => S.crew.filter(c => c.days && c.days[dayId]);
 const crewById = id => S.crew.find(c => c.id === id);
 const taskById = id => S.tasks.find(t => t.id === id);
@@ -377,6 +379,8 @@ function renderWarnings(){
     h += '</ul>';
   }
   $('#warnings').innerHTML = h;
+  const nIss = W.length + (un.length ? 1 : 0);
+  $('#issueLink').innerHTML = nIss ? `<b class="bad">${nIss} issue${nIss>1?'s':''} to resolve ↓</b>` : '<b class="ok">No issues ✓</b>';
 }
 function renderGantt(){
   let out = '';
