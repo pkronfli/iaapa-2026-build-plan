@@ -64,8 +64,7 @@ ul.warn a{color:inherit;font-weight:600}
 .mptrack{height:78px;background-color:#fafafa}
 .mp{position:absolute;bottom:0;background:#94a3b8;border-right:1px solid #fafafa;font-size:10px;color:#fff;text-align:center;line-height:14px;overflow:hidden}
 .mp.over{background:var(--bad)}
-.avline{position:absolute;left:0;right:0;border-top:2px dashed var(--ok);z-index:1}
-.avline span{position:absolute;right:4px;top:-17px;font-size:10.5px;color:var(--ok);font-weight:600;background:#fafafa;padding:0 3px}
+.avtick{position:absolute;border-top:2px solid var(--ok);z-index:1}
 .tablewrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
 th,td{border-bottom:1px solid var(--line);padding:3px 4px;text-align:left;vertical-align:middle}
@@ -139,7 +138,7 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
     <span><i style="background:#7c3aed"></i>Team</span>
     <span><i style="background:repeating-linear-gradient(45deg,#fde8e8 0 4px,#fff6f6 4px 8px);border:1px solid #f5c2c2"></i>After hall closes</span>
     <span><i style="background:#94a3b8"></i>People needed (red = more than on site)</span>
-    <span><i style="border-top:2px dashed #15803d;height:0;border-radius:0"></i>Crew on site</span>
+    <span><i style="border-top:2px solid #15803d;height:0;border-radius:0"></i>Crew on site (steps up as people arrive)</span>
   </div>
   <div id="gantt"></div>
 </section>
@@ -179,22 +178,22 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
  "firstRun":true,
  "days":[
   {"id":"d1","label":"Day 1 — Build","date":"2026-11-14","start":"08:00","end":"20:00","note":"West Hall move-in Sat 8a–8p. W1359 variance approved for 8 AM."},
-  {"id":"d2","label":"Day 2 — Tech & test","date":"2026-11-15","start":"08:00","end":"20:00","note":"Confirm OCCC Sunday hall hours."},
+  {"id":"d2","label":"Day 2 — Finish build, tech & test","date":"2026-11-15","start":"08:00","end":"20:00","note":"All setup done by Sunday night. Confirm OCCC Sunday hall hours."},
   {"id":"d3","label":"Day 3 — Sales spaces & training","date":"2026-11-16","start":"08:00","end":"20:00","note":"Show crew arrives today. Confirm Monday hall hours. Show opens Tue Nov 17."}
  ],
  "crew":[
-  {"id":"c1","name":"Patrick Kronfli","role":"Production lead","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Arrives Wed Nov 11"},
-  {"id":"c2","name":"Jason Gholston","role":"Product / arena build","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Driving the box truck down"},
-  {"id":"c3","name":"Bryce Urbantke","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Setup crew — confirm arrival"},
-  {"id":"c4","name":"Kyler Mancuso","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Setup crew — confirm arrival"},
-  {"id":"cg","name":"GES labor (1)","role":"Sign assembly — GES #88373-85A49","days":{"d1":true,"d2":false,"d3":false},"only":"t3","notes":"Booked Sat 9:00 AM, up to 2 hrs"},
-  {"id":"c5","name":"Obe Klopfenstein","role":"Product demo / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Roster says 'setup?' — tick Day 1/2 if he's coming early"},
-  {"id":"c6","name":"Brent Carrington","role":"Operations Manager","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Arrival TBD"},
-  {"id":"c7","name":"Aaliyah May","role":"Brand ambassador / social","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"In Orlando from Nov 11 — could help build"},
-  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
-  {"id":"c9","name":"Allen Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
-  {"id":"c10","name":"Brenda Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
-  {"id":"c11","name":"Luis Gaytan","role":"Sales closer / Nexus support","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c1","name":"Patrick Kronfli","role":"Production lead","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Truck crew — in Orlando Friday"},
+  {"id":"c2","name":"Jason Gholston","role":"Product / arena build","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving the box truck down — arrives Friday"},
+  {"id":"c4","name":"Kyler Mancuso","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Truck crew — arrives Friday"},
+  {"id":"c5","name":"Obe Klopfenstein","role":"Product demo / sales","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving down with Jason — arrives Friday"},
+  {"id":"c7","name":"Aaliyah May","role":"Dome bouncer + runs (brand ambassador)","days":{"d1":true,"d2":true,"d3":true},"only":"t7","from":"","notes":"On site for runs — set to Infrastructure on Day 1"},
+  {"id":"c9","name":"Allen Jowers","role":"Sales closer + build help","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"11:00","notes":"Arrives Sat ~11 AM"},
+  {"id":"cg","name":"GES labor (1)","role":"Sign assembly — GES #88373-85A49","days":{"d1":true,"d2":false,"d3":false},"only":"t3","from":"09:00","notes":"Booked Sat 9:00 AM, up to 2 hrs"},
+  {"id":"c11","name":"Luis Gaytan","role":"Sales closer / Nexus support","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"Arrives Sunday"},
+  {"id":"c3","name":"Bryce Urbantke","role":"Production + demo","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"TENTATIVE — recovering after India; coming Sat or Sun once rested"},
+  {"id":"c6","name":"Brent Carrington","role":"Operations Manager","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arrival TBD — tick Day 1/2 if he's coming early"},
+  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":""},
+  {"id":"c10","name":"Brenda Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arriving with Allen? Tick Day 1 if so"},
   {"id":"c12","name":"Cherryll Anderson","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
   {"id":"c13","name":"Marcie Kazen","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
   {"id":"c14","name":"GoPlay onboarding (TBD)","role":"GoPlay HQ","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Name + badge still needed"}
@@ -203,13 +202,15 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   {"id":"t1","day":"d1","name":"Unloading","area":"Both","start":"08:00","hours":2,"people":4,"after":"","assigned":[],"flex":false,"notes":"Box truck + turf U-Haul. GES forklift / material handling."},
   {"id":"t2","day":"d1","name":"Turf & electrical setup","area":"Both","start":"10:00","hours":2,"people":3,"after":"t1","assigned":[],"flex":false,"notes":"4 rolls 15×20 (+9×10 spare). W1359 outlet at center; W1455 2 outlets back-right."},
   {"id":"t3","day":"d1","name":"Sign setup","area":"W1455","start":"12:00","hours":2,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"20' ring, 245 lb. GES worker booked 9:00 AM — move this task or the GES time. OCCC rigging hangs it; must be up before the dome."},
-  {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":12,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"2 shooting bays, 6' × 12'6\" × 8'3\"."},
+  {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":8,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"2 shooting bays, 6' × 12'6\" × 8'3\". 12 hrs total — 8 Sat, 4 Sun."},
   {"id":"t5","day":"d1","name":"Demo Arena setup","area":"W1359","start":"12:00","hours":6,"people":2,"after":"t2","assigned":[],"flex":false,"notes":"Netted arena, frame, bunkers."},
-  {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":12,"people":2,"after":"t3","assigned":[],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Goes in under the hung sign."},
+  {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":6,"people":2,"after":"t3","assigned":[],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Goes in under the hung sign. 12 hrs total — 6 Sat, 6 Sun."},
   {"id":"t7","day":"d1","name":"Infrastructure","area":"Both","start":"08:00","hours":12,"people":1,"after":"","assigned":[],"flex":false,"notes":"On and off all day: power runs, internet (W1455), furniture, trash, truck runs. Tick Shared if this person also works other tasks."},
-  {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"08:00","hours":5,"people":1,"after":"t4","assigned":[],"flex":false,"notes":""},
+  {"id":"t4b","day":"d2","name":"Battle Bay setup (cont.)","area":"W1359","start":"08:00","hours":4,"people":3,"after":"t4","assigned":[],"flex":false,"notes":"Remaining Battle Bay build hours."},
+  {"id":"t6b","day":"d2","name":"Dome setup (cont.)","area":"W1455","start":"08:00","hours":6,"people":2,"after":"t6","assigned":[],"flex":false,"notes":"Remaining dome build hours."},
+  {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"12:00","hours":5,"people":1,"after":"t4b","assigned":[],"flex":false,"notes":""},
   {"id":"t9","day":"d2","name":"Demo Arena testing","area":"W1359","start":"08:00","hours":2,"people":1,"after":"t5","assigned":[],"flex":false,"notes":""},
-  {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"08:00","hours":5,"people":2,"after":"t6","assigned":[],"flex":false,"notes":""},
+  {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"14:00","hours":5,"people":2,"after":"t6b","assigned":[],"flex":false,"notes":""},
   {"id":"t11","day":"d3","name":"Sales spaces setup","area":"W1455","start":"08:00","hours":10,"people":3,"after":"","assigned":[],"flex":false,"notes":"Lounge, check-in podium, TVs, furniture, merch."},
   {"id":"t12","day":"d3","name":"Training","area":"Team","start":"18:00","hours":3,"people":"all","after":"t11","assigned":[],"flex":false,"notes":"Everyone on site. Move earlier once show-crew flights are known."}
  ]
@@ -242,6 +243,9 @@ const fmtH = n => (Math.round(n*10)/10).toString();
 const personHours = ts => fmtH(ts.reduce((s,t) => s + need(t) * t.hours, 0));
 const dateLabel = d => { try { return new Date(d + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); } catch(e) { return d; } };
 const overlaps = (a,b) => tStart(a) < tEnd(b) && tEnd(a) > tStart(b);
+const firstDayOf = c => { const d = S.days.find(x => c.days && c.days[x.id]); return d ? d.id : null; };
+const arrivesAt = (c, dayId) => (c.from && firstDayOf(c) === dayId) ? toMin(c.from) : null;
+const availAt = (c, dayId, m) => !!(c.days && c.days[dayId]) && (arrivesAt(c, dayId) === null || m >= arrivesAt(c, dayId));
 
 function profile(dayId){
   const d = dayOf(dayId), ts = S.tasks.filter(t => t.day === dayId);
@@ -252,20 +256,19 @@ function profile(dayId){
   for (let m = s; m < e; m += 30){
     let n = 0;
     for (const t of ts) if (!t.flex && tStart(t) < m+30 && tEnd(t) > m) n += need(t);
-    slots.push({m, n});
+    slots.push({m, n, a: S.crew.filter(c => availAt(c, dayId, m)).length});
   }
-  return {s, e, slots, peak: Math.max(0, ...slots.map(x => x.n))};
+  const worst = slots.reduce((w, x) => (x.n - x.a > w.n - w.a ? x : w), {n:0, a:0, m:s});
+  return {s, e, slots, peak: Math.max(0, ...slots.map(x => x.n)), short: Math.max(0, worst.n - worst.a), worst};
 }
 
 /* ---------- analysis ---------- */
 function analyze(){
   const W = [];
   S.days.forEach(d => {
-    const P = profile(d.id), av = crewOn(d.id).length;
-    if (P.peak > av){
-      const worst = P.slots.filter(x => x.n === P.peak);
-      W.push({lvl:'bad', msg:`${d.label} (${dateLabel(d.date)}): need ${P.peak} people at peak (${fmt(worst[0].m)}) but only ${av} on site — short ${P.peak-av}.`});
-    }
+    const P = profile(d.id);
+    if (P.short > 0)
+      W.push({lvl:'bad', msg:`${d.label} (${dateLabel(d.date)}): at ${fmt(P.worst.m)} you need ${P.worst.n} people but only ${P.worst.a} are on site — short ${P.short}.`});
   });
   S.tasks.forEach(t => {
     const d = dayOf(t.day); if (!d) return;
@@ -279,7 +282,9 @@ function analyze(){
           W.push({lvl:'bad', t, msg:`starts before “${p.name}” is finished (${fmt(tEnd(p))}${pi!==ti?' on '+dayOf(p.day).label:''}). Click Auto-schedule or move it.`});
       }
     }
-    (t.assigned||[]).forEach(cid => { const c = crewById(cid); if (c && !c.days[t.day]) W.push({lvl:'bad', t, msg:`${c.name} is assigned but not marked on site for ${d.label}.`}); });
+    (t.assigned||[]).forEach(cid => { const c = crewById(cid); if (!c) return;
+      if (!c.days[t.day]) W.push({lvl:'bad', t, msg:`${c.name} is assigned but not marked on site for ${d.label}.`});
+      else if (!availAt(c, t.day, tStart(t))) W.push({lvl:'bad', t, msg:`${c.name} doesn't arrive until ${fmt(arrivesAt(c, t.day))}.`}); });
   });
   S.days.forEach(d => {
     const ts = S.tasks.filter(t => t.day === d.id && !t.flex);
@@ -321,7 +326,7 @@ function autoAssign(){
       if (!t.flex) ts.forEach(o => { if (o !== t && !o.flex && overlaps(o,t)) o.assigned.forEach(id => busy.add(id)); });
       const pref = new Set();
       if (t.after){ const p = taskById(t.after); if (p) (p.assigned||[]).forEach(id => pref.add(id)); }
-      const cands = crew.filter(c => !busy.has(c.id) && (!c.only || c.only === t.id))
+      const cands = crew.filter(c => !busy.has(c.id) && availAt(c, d.id, tStart(t)) && (t.people === 'all' || !c.only || c.only === t.id))
         .sort((a,b) => ((b.only===t.id)-(a.only===t.id)) || (pref.has(b.id)-pref.has(a.id)) || (load[a.id]-load[b.id]));
       t.assigned = cands.slice(0, n).map(c => c.id);
       t.assigned.forEach(id => load[id] += Number(t.hours)||0);
@@ -346,11 +351,11 @@ function renderSummary(){
   let h = '';
   S.days.forEach(d => {
     const P = profile(d.id), av = crewOn(d.id).length, ts = S.tasks.filter(t => t.day === d.id);
-    const last = ts.length ? Math.max(...ts.map(tEnd)) : toMin(d.start), short = P.peak - av, late = last > toMin(d.end);
+    const last = ts.length ? Math.max(...ts.map(tEnd)) : toMin(d.start), short = P.short, late = last > toMin(d.end);
     h += `<div class="card ${short>0||late?'badc':''}">
       <div class="ct">${esc(d.label)} · ${dateLabel(d.date)}</div>
       <div class="big">${av} <small>on site</small> · ${P.peak} <small>needed at peak</small></div>
-      <div class="ln">${short>0?`<b class="bad">Short ${short} ${short===1?'person':'people'}</b>`:'<b class="ok">Enough people</b>'} · ${personHours(ts)} person-hrs</div>
+      <div class="ln">${short>0?`<b class="bad">Short ${short} ${short===1?'person':'people'} at ${fmt(P.worst.m)}</b>`:'<b class="ok">Enough people</b>'} · ${personHours(ts)} person-hrs</div>
       <div class="ln">Last task wraps ${fmt(last)} ${late?`<b class="bad">— hall closes ${fmt(toMin(d.end))}</b>`:`<span class="ok">✓ before ${fmt(toMin(d.end))} close</span>`}</div>
     </div>`;
   });
@@ -383,12 +388,12 @@ function renderGantt(){
         <div class="gtrack">${shade}<div class="bar ${t.flex?'flex':''} ${over?'over':''}" data-id="${t.id}" style="left:${pct(tStart(t))}%;width:${t.hours*60/span*100}%;--c:${AREAS[t.area]||'#64748b'}" title="${esc(t.name)} · ${fmt(tStart(t))}–${fmt(tEnd(t))} · ${n} people${names?' · '+esc(names):''}">${esc(t.name)} · ${n}p${names?' — '+esc(names):''}<i class="rz"></i></div></div></div>`;
     }).join('');
     const maxN = Math.max(P.peak, av, 1);
-    const mp = P.slots.map(x => `<div class="mp ${x.n>av?'over':''}" style="left:${pct(x.m)}%;width:${30/span*100}%;height:${x.n/maxN*100}%" title="${fmt(x.m)}: ${x.n} needed / ${av} on site">${x.n||''}</div>`).join('');
-    out += `<div class="day"><div class="dayhead"><h3>${esc(d.label)} — ${dateLabel(d.date)}</h3><span>Hall ${fmt(toMin(d.start))}–${fmt(toMin(d.end))} · ${av} on site · peak need ${P.peak}${P.peak>av?` <b class="bad">(short ${P.peak-av})</b>`:''}${d.note?' · '+esc(d.note):''}</span></div>
+    const mp = P.slots.map(x => `<div class="mp ${x.n>x.a?'over':''}" style="left:${pct(x.m)}%;width:${30/span*100}%;height:${x.n/maxN*100}%" title="${fmt(x.m)}: ${x.n} needed / ${x.a} on site">${x.n||''}</div><div class="avtick" style="left:${pct(x.m)}%;width:${30/span*100}%;bottom:${x.a/maxN*100}%"></div>`).join('');
+    out += `<div class="day"><div class="dayhead"><h3>${esc(d.label)} — ${dateLabel(d.date)}</h3><span>Hall ${fmt(toMin(d.start))}–${fmt(toMin(d.end))} · ${av} on site · peak need ${P.peak}${P.short>0?` <b class="bad">(short ${P.short} at ${fmt(P.worst.m)})</b>`:''}${d.note?' · '+esc(d.note):''}</span></div>
       <div class="grid" style="--hw:${100/nh}%">
         <div class="grow"><div class="glabel" style="cursor:default"></div><div class="gtrack hours">${hours}</div></div>
         ${rows || '<div class="grow"><div class="glabel mut">No tasks yet</div><div class="gtrack"></div></div>'}
-        <div class="grow mprow"><div class="glabel"><b>People needed</b><span>${av} on site</span></div><div class="gtrack mptrack">${shade}<div class="avline" style="bottom:${av/maxN*100}%"><span>${av} on site</span></div>${mp}</div></div>
+        <div class="grow mprow"><div class="glabel"><b>People needed</b><span>${av} on site</span></div><div class="gtrack mptrack">${shade}${mp}</div></div>
       </div></div>`;
   });
   $('#gantt').innerHTML = out;
@@ -402,9 +407,10 @@ function crewPicker(t){
   const n = need(t), a = (t.assigned||[]);
   const names = a.map(id => (crewById(id)||{}).name).filter(Boolean).map(x => x.split(' ')[0]).join(', ');
   const items = S.crew.map(c => {
-    const on = c.days[t.day], chk = a.includes(c.id);
+    const on = c.days[t.day] && availAt(c, t.day, tStart(t)), chk = a.includes(c.id);
+    const why = !c.days[t.day] ? ' (not on site)' : (!on ? ` (arrives ${fmt(arrivesAt(c, t.day))})` : '');
     const clash = S.tasks.find(o => o !== t && o.day === t.day && !o.flex && !t.flex && (o.assigned||[]).includes(c.id) && overlaps(o,t));
-    return `<label class="${on?'':'na'}"><input type="checkbox" data-crew="${c.id}" ${chk?'checked':''}>${esc(c.name)}${on?'':' (not on site)'}${clash?`<span class="busy">on ${esc(clash.name)}</span>`:''}</label>`;
+    return `<label class="${on?'':'na'}"><input type="checkbox" data-crew="${c.id}" ${chk?'checked':''}>${esc(c.name)}${why}${clash?`<span class="busy">on ${esc(clash.name)}</span>`:''}</label>`;
   }).join('');
   return `<details class="crewpick" data-pick="${t.id}" ${openPick===t.id?'open':''}><summary>${a.length<n?`<b class="short">${a.length}/${n}</b>`:`${a.length}/${n}`} ${esc(names)||'<span class="mut">pick…</span>'} ▾</summary><div class="menu">${items}</div></details>`;
 }
@@ -436,11 +442,12 @@ function renderTasks(){
   $('#taskBody').innerHTML = h;
 }
 function renderCrew(){
-  $('#crewHead').innerHTML = `<tr><th>Name</th><th>Role</th>${S.days.map(d => `<th class="c" title="${esc(d.label)}">${shortDay(d.id)}<br><span style="font-weight:400;text-transform:none">${dateLabel(d.date).replace(/^\w+, /,'')}</span></th>`).join('')}<th>Only for task</th><th>Notes</th><th></th></tr>`;
+  $('#crewHead').innerHTML = `<tr><th>Name</th><th>Role</th>${S.days.map(d => `<th class="c" title="${esc(d.label)}">${shortDay(d.id)}<br><span style="font-weight:400;text-transform:none">${dateLabel(d.date).replace(/^\w+, /,'')}</span></th>`).join('')}<th title="Arrival time on their first day on site (blank = there when the hall opens)">Arrives</th><th>Only for task</th><th>Notes</th><th></th></tr>`;
   $('#crewBody').innerHTML = S.crew.map(c => `<tr data-cid="${c.id}">
     <td style="min-width:150px"><input data-cf="name" value="${esc(c.name)}"></td>
     <td style="min-width:150px"><input data-cf="role" value="${esc(c.role)}"></td>
     ${S.days.map(d => `<td class="c"><input type="checkbox" data-day="${d.id}" ${c.days[d.id]?'checked':''}></td>`).join('')}
+    <td><input type="time" step="900" data-cf="from" value="${esc(c.from||'')}"></td>
     <td><select data-cf="only"><option value="">Any task</option>${S.tasks.map(t => `<option value="${t.id}" ${c.only===t.id?'selected':''}>${shortDay(t.day)} · ${esc(t.name)}</option>`).join('')}</select></td>
     <td style="min-width:160px"><input data-cf="notes" value="${esc(c.notes)}" title="${esc(c.notes)}"></td>
     <td class="acts"><button data-cact="del" title="Remove">✕</button></td></tr>`).join('');
@@ -460,7 +467,8 @@ function renderPeople(){
     const rows = crew.map(c => {
       const mine = S.tasks.filter(t => t.day === d.id && (t.assigned||[]).includes(c.id)).sort((a,b) => tStart(a)-tStart(b));
       const hrs = mine.reduce((s,t) => s + Number(t.hours), 0);
-      return `<tr><td style="white-space:nowrap">${esc(c.name)}</td><td>${mine.map(t => `<span class="chip" style="--c:${AREAS[t.area]||'#64748b'}">${fmt(tStart(t))}–${fmt(tEnd(t))} ${esc(t.name)}</span>`).join('') || '<span class="mut">free</span>'}</td><td class="${hrs>12?'bad':''}" style="text-align:right">${fmtH(hrs)}h</td></tr>`;
+      const arr = arrivesAt(c, d.id);
+      return `<tr><td style="white-space:nowrap">${esc(c.name)}${arr!==null?` <span class="mut">(from ${fmt(arr)})</span>`:''}</td><td>${mine.map(t => `<span class="chip" style="--c:${AREAS[t.area]||'#64748b'}">${fmt(tStart(t))}–${fmt(tEnd(t))} ${esc(t.name)}</span>`).join('') || '<span class="mut">free</span>'}</td><td class="${hrs>12?'bad':''}" style="text-align:right">${fmtH(hrs)}h</td></tr>`;
     }).join('');
     return `<div><h3>${esc(d.label)} · ${dateLabel(d.date)}</h3><table>${rows || '<tr><td class="mut">Nobody marked on site</td></tr>'}</table></div>`;
   }).join('');
@@ -623,7 +631,7 @@ window.addEventListener('pointerup', () => {
 });
 window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e.returnValue = ''; } });
 
-if (S.firstRun){ autoAssign(); delete S.firstRun; }
+if (S.firstRun){ autoSchedule(); autoAssign(); delete S.firstRun; }
 renderAll();
 </script>
 </body>
