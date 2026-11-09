@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>IAAPA 2026 Build Plan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{--bg:#f6f6f3;--card:#fff;--ink:#1f2328;--mut:#6b7280;--line:#e5e7eb;--bad:#dc2626;--warn:#b45309;--ok:#15803d;--label:250px}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:20px 24px 6px}
+h1{font-size:22px;margin:0;outline:none;border-radius:6px;padding:2px 4px;margin-left:-4px}
+h1:hover{background:#fff}
+h2{font-size:15px;margin:0 0 10px}
+h3{font-size:14px;margin:0}
+.sub{color:var(--mut);margin-top:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--ink)}
+button:hover{background:#f1f5f9}
+button.primary{background:#111827;color:#fff;border-color:#111827}
+button.primary:hover{background:#374151}
+.note{margin:4px 24px 0;color:var(--mut);font-size:12.5px}
+.dirty{color:var(--warn);font-weight:600}
+section{margin:12px 24px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+section.bare{background:none;border:none;padding:0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{background:#fff;border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:12px;padding:12px 14px}
+.card.badc{border-left-color:var(--bad)}
+.card .ct{font-weight:600;font-size:13px;color:var(--mut)}
+.card .big{font-size:24px;font-weight:700;margin:4px 0}
+.card .big small{font-size:12px;font-weight:500;color:var(--mut)}
+.card .ln{font-size:12.5px;margin-top:2px}
+.bad{color:var(--bad)} .ok{color:var(--ok)} .mut{color:var(--mut)}
+ul.warn{margin:0;padding-left:0;list-style:none}
+ul.warn li{padding:5px 0 5px 22px;position:relative;border-bottom:1px dashed var(--line)}
+ul.warn li:last-child{border-bottom:none}
+ul.warn li:before{content:"";position:absolute;left:4px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--warn)}
+ul.warn li.bad:before{background:var(--bad)}
+ul.warn a{color:inherit;font-weight:600}
+.okmsg{color:var(--ok);font-weight:600}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-bottom:10px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+.day{margin-bottom:22px}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.dayhead span{font-size:12.5px;color:var(--mut)}
+.grid{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.grow{display:flex;border-top:1px solid var(--line);min-height:40px}
+.grow:first-child{border-top:none}
+.glabel{width:var(--label);flex:none;padding:5px 10px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;font-size:12.5px;cursor:pointer}
+.glabel span{color:var(--mut);font-size:11.5px}
+.glabel em{font-style:normal;color:var(--warn);font-weight:600}
+.gtrack{position:relative;flex:1;background-image:linear-gradient(to right,#eef0f3 1px,transparent 1px);background-size:var(--hw) 100%}
+.hours{height:26px;background:#fafafa}
+.hr{position:absolute;top:0;bottom:0;font-size:11px;color:var(--mut);padding:5px 4px;border-left:1px solid var(--line);white-space:nowrap;overflow:hidden}
+.closed{position:absolute;top:0;bottom:0;right:0;background:repeating-linear-gradient(45deg,#fde8e8 0 6px,#fff6f6 6px 12px)}
+.preopen{position:absolute;top:0;bottom:0;left:0;background:#f3f4f6}
+.closeline{position:absolute;top:0;bottom:0;border-left:2px dashed var(--bad);z-index:1}
+.bar{position:absolute;top:6px;bottom:6px;background:var(--c);border-radius:6px;color:#fff;font-size:12px;padding:0 10px 0 8px;display:flex;align-items:center;white-space:nowrap;overflow:hidden;cursor:grab;box-shadow:0 1px 2px rgba(0,0,0,.18);z-index:2;user-select:none;touch-action:none}
+.bar:active{cursor:grabbing}
+.bar.over{box-shadow:0 0 0 2px var(--bad)}
+.bar.flex{background:repeating-linear-gradient(45deg,var(--c) 0 8px,color-mix(in srgb,var(--c) 65%,#fff) 8px 16px)}
+.bar .rz{position:absolute;right:0;top:0;bottom:0;width:9px;cursor:ew-resize;background:rgba(255,255,255,.25)}
+.mprow .glabel{cursor:default;background:#fafafa}
+.mptrack{height:78px;background-color:#fafafa}
+.mp{position:absolute;bottom:0;background:#94a3b8;border-right:1px solid #fafafa;font-size:10px;color:#fff;text-align:center;line-height:14px;overflow:hidden}
+.mp.over{background:var(--bad)}
+.avline{position:absolute;left:0;right:0;border-top:2px dashed var(--ok);z-index:1}
+.avline span{position:absolute;right:4px;top:-17px;font-size:10.5px;color:var(--ok);font-weight:600;background:#fafafa;padding:0 3px}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{border-bottom:1px solid var(--line);padding:3px 4px;text-align:left;vertical-align:middle}
+th{font-size:11.5px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
+td.c,th.c{text-align:center}
+tr.dayrow td{background:#f8fafc;font-weight:700;padding:8px 6px}
+tr.dayrow span{font-weight:400;color:var(--mut);margin-left:8px;font-size:12.5px}
+tr.flash td{animation:flash 1.6s}
+@keyframes flash{0%{background:#fef9c3}100%{background:transparent}}
+input,select{font:inherit;border:1px solid transparent;background:transparent;padding:4px 6px;border-radius:6px;width:100%;color:inherit}
+input:hover,select:hover{border-color:var(--line)}
+input:focus,select:focus{border-color:#93c5fd;background:#fff;outline:none}
+input[type=checkbox]{width:auto}
+input.num{width:64px}
+input[type=time]{width:112px}
+td.end{white-space:nowrap;font-size:12.5px}
+.sw{display:inline-block;width:10px;height:28px;border-radius:3px}
+.acts{white-space:nowrap}
+.acts button{padding:3px 7px;font-size:12px}
+details.crewpick{position:relative;min-width:150px}
+details.crewpick summary{cursor:pointer;list-style:none;padding:4px 6px;border-radius:6px;border:1px solid transparent;font-size:12.5px}
+details.crewpick summary::-webkit-details-marker{display:none}
+details.crewpick summary:hover{border-color:var(--line)}
+details.crewpick summary b.short{color:var(--warn)}
+details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 28px rgba(0,0,0,.14);padding:6px;min-width:240px;max-height:320px;overflow:auto}
+.menu label{display:flex;gap:6px;align-items:center;padding:3px 4px;border-radius:4px;cursor:pointer}
+.menu label:hover{background:#f3f4f6}
+.menu label.na{color:#9ca3af}
+.menu .busy{color:var(--warn);font-size:11px;margin-left:auto}
+.two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin:12px 24px}
+.two section{margin:0}
+.ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.ps h3{margin-bottom:6px}
+.chip{display:inline-block;border-left:4px solid var(--c);background:#f8fafc;border-radius:4px;padding:1px 6px;margin:2px 2px 2px 0;font-size:12px;white-space:nowrap}
+.addrow{margin-top:8px}
+@media (max-width:900px){.two{grid-template-columns:1fr}:root{--label:170px}}
+@media print{
+  .actions,.note,.acts,.addrow,button{display:none!important}
+  body{background:#fff}
+  section{break-inside:avoid;border:none;padding:6px 0;margin:6px 0}
+  .day{break-inside:avoid}
+  input,select{border:none!important;-webkit-appearance:none;appearance:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 id="title" contenteditable="true" spellcheck="false"></h1>
+    <div class="sub">W1359 arena (20×40) + W1455 GoPlay HQ (20×20) · OCCC West Hall · Show floor Nov 17–20</div>
+  </div>
+  <div class="actions">
+    <button id="btnAuto" title="Start each task the moment the task it follows is finished">Auto-schedule</button>
+    <button id="btnAssign" title="Fill every task with available crew, avoiding double-booking">Auto-assign crew</button>
+    <button id="btnCsv">Export CSV</button>
+    <button id="btnPrint">Print</button>
+    <button id="btnSave" class="primary">Save copy (.html)</button>
+  </div>
+</header>
+<div class="note"><span id="dirty"></span>Edit anything below — drag bars to move them, drag a bar's right edge to change hours. Edits live in this page until you click <b>Save copy</b>, which downloads a new .html with your changes built in.</div>
+
+<section class="bare"><div id="summary" class="cards"></div></section>
+<section id="warnings"></section>
+
+<section>
+  <h2>Timeline</h2>
+  <div class="legend">
+    <span><i style="background:#2563eb"></i>W1359 arena</span>
+    <span><i style="background:#ea580c"></i>W1455 GoPlay HQ</span>
+    <span><i style="background:#64748b"></i>Both booths</span>
+    <span><i style="background:#7c3aed"></i>Team</span>
+    <span><i style="background:repeating-linear-gradient(45deg,#fde8e8 0 4px,#fff6f6 4px 8px);border:1px solid #f5c2c2"></i>After hall closes</span>
+    <span><i style="background:#94a3b8"></i>People needed (red = more than on site)</span>
+    <span><i style="border-top:2px dashed #15803d;height:0;border-radius:0"></i>Crew on site</span>
+  </div>
+  <div id="gantt"></div>
+</section>
+
+<section>
+  <h2>Tasks</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>Task</th><th>Day</th><th>Area</th><th>Start</th><th>Hrs</th><th>Ends</th><th>People</th><th title="People × hours">P-hrs</th><th>Follows</th><th>Crew</th><th class="c" title="Shared / on-and-off: doesn't count toward peak headcount and doesn't block the person from other tasks">Shared</th><th>Notes</th><th></th></tr></thead>
+      <tbody id="taskBody"></tbody>
+    </table>
+  </div>
+  <div class="addrow"><button id="addTask">+ Add task</button></div>
+</section>
+
+<div class="two">
+  <section>
+    <h2>Crew &amp; availability</h2>
+    <div class="tablewrap"><table><thead id="crewHead"></thead><tbody id="crewBody"></tbody></table></div>
+    <div class="addrow"><button id="addCrew">+ Add person</button></div>
+  </section>
+  <section>
+    <h2>Build days &amp; hall hours</h2>
+    <div class="tablewrap"><table><thead><tr><th>Label</th><th>Date</th><th>Open</th><th>Close</th><th>Notes</th><th></th></tr></thead><tbody id="dayBody"></tbody></table></div>
+    <div class="addrow"><button id="addDay">+ Add day</button></div>
+  </section>
+</div>
+
+<section>
+  <h2>Who's doing what</h2>
+  <div id="people" class="ps"></div>
+</section>
+
+<script id="plan-data" type="application/json">
+{
+ "title":"IAAPA Expo 2026 — Build Plan & Manpower",
+ "firstRun":true,
+ "days":[
+  {"id":"d1","label":"Day 1 — Build","date":"2026-11-14","start":"08:00","end":"20:00","note":"West Hall move-in Sat 8a–8p. W1359 variance approved for 8 AM."},
+  {"id":"d2","label":"Day 2 — Tech & test","date":"2026-11-15","start":"08:00","end":"20:00","note":"Confirm OCCC Sunday hall hours."},
+  {"id":"d3","label":"Day 3 — Sales spaces & training","date":"2026-11-16","start":"08:00","end":"20:00","note":"Show crew arrives today. Confirm Monday hall hours. Show opens Tue Nov 17."}
+ ],
+ "crew":[
+  {"id":"c1","name":"Patrick Kronfli","role":"Production lead","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Arrives Wed Nov 11"},
+  {"id":"c2","name":"Jason Gholston","role":"Product / arena build","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Driving the box truck down"},
+  {"id":"c3","name":"Bryce Urbantke","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Setup crew — confirm arrival"},
+  {"id":"c4","name":"Kyler Mancuso","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","notes":"Setup crew — confirm arrival"},
+  {"id":"cg","name":"GES labor (1)","role":"Sign assembly — GES #88373-85A49","days":{"d1":true,"d2":false,"d3":false},"only":"t3","notes":"Booked Sat 9:00 AM, up to 2 hrs"},
+  {"id":"c5","name":"Obe Klopfenstein","role":"Product demo / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Roster says 'setup?' — tick Day 1/2 if he's coming early"},
+  {"id":"c6","name":"Brent Carrington","role":"Operations Manager","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Arrival TBD"},
+  {"id":"c7","name":"Aaliyah May","role":"Brand ambassador / social","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"In Orlando from Nov 11 — could help build"},
+  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c9","name":"Allen Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c10","name":"Brenda Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c11","name":"Luis Gaytan","role":"Sales closer / Nexus support","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c12","name":"Cherryll Anderson","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c13","name":"Marcie Kazen","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c14","name":"GoPlay onboarding (TBD)","role":"GoPlay HQ","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Name + badge still needed"}
+ ],
+ "tasks":[
+  {"id":"t1","day":"d1","name":"Unloading","area":"Both","start":"08:00","hours":2,"people":4,"after":"","assigned":[],"flex":false,"notes":"Box truck + turf U-Haul. GES forklift / material handling."},
+  {"id":"t2","day":"d1","name":"Turf & electrical setup","area":"Both","start":"10:00","hours":2,"people":3,"after":"t1","assigned":[],"flex":false,"notes":"4 rolls 15×20 (+9×10 spare). W1359 outlet at center; W1455 2 outlets back-right."},
+  {"id":"t3","day":"d1","name":"Sign setup","area":"W1455","start":"12:00","hours":2,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"20' ring, 245 lb. GES worker booked 9:00 AM — move this task or the GES time. OCCC rigging hangs it; must be up before the dome."},
+  {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":12,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"2 shooting bays, 6' × 12'6\" × 8'3\"."},
+  {"id":"t5","day":"d1","name":"Demo Arena setup","area":"W1359","start":"12:00","hours":6,"people":2,"after":"t2","assigned":[],"flex":false,"notes":"Netted arena, frame, bunkers."},
+  {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":12,"people":2,"after":"t3","assigned":[],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Goes in under the hung sign."},
+  {"id":"t7","day":"d1","name":"Infrastructure","area":"Both","start":"08:00","hours":12,"people":1,"after":"","assigned":[],"flex":false,"notes":"On and off all day: power runs, internet (W1455), furniture, trash, truck runs. Tick Shared if this person also works other tasks."},
+  {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"08:00","hours":5,"people":1,"after":"t4","assigned":[],"flex":false,"notes":""},
+  {"id":"t9","day":"d2","name":"Demo Arena testing","area":"W1359","start":"08:00","hours":2,"people":1,"after":"t5","assigned":[],"flex":false,"notes":""},
+  {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"08:00","hours":5,"people":2,"after":"t6","assigned":[],"flex":false,"notes":""},
+  {"id":"t11","day":"d3","name":"Sales spaces setup","area":"W1455","start":"08:00","hours":10,"people":3,"after":"","assigned":[],"flex":false,"notes":"Lounge, check-in podium, TVs, furniture, merch."},
+  {"id":"t12","day":"d3","name":"Training","area":"Team","start":"18:00","hours":3,"people":"all","after":"t11","assigned":[],"flex":false,"notes":"Everyone on site. Move earlier once show-crew flights are known."}
+ ]
+}
+</script>
+<script>
+const TEMPLATE = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+const $ = s => document.querySelector(s);
+let S = JSON.parse(document.getElementById('plan-data').textContent);
+const AREAS = {'W1359':'#2563eb','W1455':'#ea580c','Both':'#64748b','Team':'#7c3aed'};
+let dirty = false, openPick = null;
+
+/* ---------- helpers ---------- */
+const toMin = t => { const [h,m] = String(t||'0:0').split(':').map(Number); return (h||0)*60 + (m||0); };
+const toHM = m => { m = Math.max(0, Math.round(m)); return String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0'); };
+const fmt = m => { m = Math.round(m); const d = Math.floor(m/1440); m -= d*1440; const h = Math.floor(m/60), mm = m%60;
+  return (h%12||12) + (mm ? ':' + String(mm).padStart(2,'0') : '') + (h<12?'a':'p') + (d ? ' (+' + d + 'd)' : ''); };
+const uid = p => p + Math.random().toString(36).slice(2,8);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dayOf = id => S.days.find(d => d.id === id);
+const dayIdx = id => S.days.findIndex(d => d.id === id);
+const shortDay = id => 'D' + (dayIdx(id) + 1);
+const crewOn = dayId => S.crew.filter(c => c.days && c.days[dayId]);
+const crewById = id => S.crew.find(c => c.id === id);
+const taskById = id => S.tasks.find(t => t.id === id);
+const tStart = t => toMin(t.start);
+const tEnd = t => toMin(t.start) + (Number(t.hours)||0) * 60;
+const need = t => t.people === 'all' ? crewOn(t.day).length : (Number(t.people)||0);
+const fmtH = n => (Math.round(n*10)/10).toString();
+const personHours = ts => fmtH(ts.reduce((s,t) => s + need(t) * t.hours, 0));
+const dateLabel = d => { try { return new Date(d + 'T12:00:00').toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); } catch(e) { return d; } };
+const overlaps = (a,b) => tStart(a) < tEnd(b) && tEnd(a) > tStart(b);
+
+function profile(dayId){
+  const d = dayOf(dayId), ts = S.tasks.filter(t => t.day === dayId);
+  let s = Math.min(toMin(d.start), ...ts.map(tStart));
+  let e = Math.max(toMin(d.end), ...ts.map(tEnd));
+  s = Math.floor(s/60)*60; e = Math.ceil(e/60)*60; if (e <= s) e = s + 60;
+  const slots = [];
+  for (let m = s; m < e; m += 30){
+    let n = 0;
+    for (const t of ts) if (!t.flex && tStart(t) < m+30 && tEnd(t) > m) n += need(t);
+    slots.push({m, n});
+  }
+  return {s, e, slots, peak: Math.max(0, ...slots.map(x => x.n))};
+}
+
+/* ---------- analysis ---------- */
+function analyze(){
+  const W = [];
+  S.days.forEach(d => {
+    const P = profile(d.id), av = crewOn(d.id).length;
+    if (P.peak > av){
+      const worst = P.slots.filter(x => x.n === P.peak);
+      W.push({lvl:'bad', msg:`${d.label} (${dateLabel(d.date)}): need ${P.peak} people at peak (${fmt(worst[0].m)}) but only ${av} on site — short ${P.peak-av}.`});
+    }
+  });
+  S.tasks.forEach(t => {
+    const d = dayOf(t.day); if (!d) return;
+    if (tEnd(t) > toMin(d.end)) W.push({lvl:'bad', t, msg:`ends ${fmt(tEnd(t))}, after the hall closes (${fmt(toMin(d.end))}). Split it to the next day, start earlier, or add people.`});
+    if (tStart(t) < toMin(d.start)) W.push({lvl:'warn', t, msg:`starts ${fmt(tStart(t))}, before the hall opens (${fmt(toMin(d.start))}).`});
+    if (t.after){
+      const p = taskById(t.after);
+      if (p){
+        const pi = dayIdx(p.day), ti = dayIdx(t.day);
+        if (pi > ti || (pi === ti && tEnd(p) > tStart(t)))
+          W.push({lvl:'bad', t, msg:`starts before “${p.name}” is finished (${fmt(tEnd(p))}${pi!==ti?' on '+dayOf(p.day).label:''}). Click Auto-schedule or move it.`});
+      }
+    }
+    (t.assigned||[]).forEach(cid => { const c = crewById(cid); if (c && !c.days[t.day]) W.push({lvl:'bad', t, msg:`${c.name} is assigned but not marked on site for ${d.label}.`}); });
+  });
+  S.days.forEach(d => {
+    const ts = S.tasks.filter(t => t.day === d.id && !t.flex);
+    S.crew.forEach(c => {
+      const mine = ts.filter(t => (t.assigned||[]).includes(c.id)).sort((a,b) => tStart(a)-tStart(b));
+      for (let i = 1; i < mine.length; i++) for (let j = 0; j < i; j++)
+        if (overlaps(mine[i], mine[j])) W.push({lvl:'bad', t:mine[i], msg:`${c.name} is double-booked with “${mine[j].name}”.`});
+    });
+  });
+  return W;
+}
+
+/* ---------- scheduling ---------- */
+function autoSchedule(){
+  const done = new Set(); let guard = 0;
+  while (done.size < S.tasks.length && guard++ < 500){
+    for (const t of S.tasks){
+      if (done.has(t.id)) continue;
+      const p = t.after ? taskById(t.after) : null;
+      if (p && !done.has(p.id)) continue;
+      if (p){
+        const d = dayOf(t.day);
+        let st = toMin(d.start);
+        if (p.day === t.day) st = Math.max(st, tEnd(p));
+        t.start = toHM(st);
+      }
+      done.add(t.id);
+    }
+  }
+}
+function autoAssign(){
+  S.tasks.forEach(t => t.assigned = []);
+  S.days.forEach(d => {
+    const crew = crewOn(d.id), load = {};
+    crew.forEach(c => load[c.id] = 0);
+    const ts = S.tasks.filter(t => t.day === d.id).sort((a,b) => tStart(a)-tStart(b) || S.tasks.indexOf(a)-S.tasks.indexOf(b));
+    for (const t of ts){
+      const n = need(t), busy = new Set();
+      if (!t.flex) ts.forEach(o => { if (o !== t && !o.flex && overlaps(o,t)) o.assigned.forEach(id => busy.add(id)); });
+      const pref = new Set();
+      if (t.after){ const p = taskById(t.after); if (p) (p.assigned||[]).forEach(id => pref.add(id)); }
+      const cands = crew.filter(c => !busy.has(c.id) && (!c.only || c.only === t.id))
+        .sort((a,b) => ((b.only===t.id)-(a.only===t.id)) || (pref.has(b.id)-pref.has(a.id)) || (load[a.id]-load[b.id]));
+      t.assigned = cands.slice(0, n).map(c => c.id);
+      t.assigned.forEach(id => load[id] += Number(t.hours)||0);
+    }
+  });
+}
+function splitTask(t){
+  const d = dayOf(t.day), close = toMin(d.end), rem = (tEnd(t) - close) / 60;
+  if (rem <= 0) return;
+  const nd = S.days[dayIdx(t.day) + 1];
+  if (!nd){ alert('There is no next day to split into — add a day first.'); return; }
+  t.hours = Math.max(0.25, (close - tStart(t)) / 60);
+  const c = JSON.parse(JSON.stringify(t));
+  Object.assign(c, {id: uid('t'), name: t.name.replace(/ \(cont\.\)$/,'') + ' (cont.)', day: nd.id, start: nd.start, hours: Math.round(rem*4)/4, after: t.id, assigned: (t.assigned||[]).filter(id => crewById(id) && crewById(id).days[nd.id])});
+  S.tasks.forEach(x => { if (x.after === t.id) x.after = c.id; });
+  S.tasks.splice(S.tasks.indexOf(t) + 1, 0, c);
+  autoSchedule();
+}
+
+/* ---------- rendering ---------- */
+function renderSummary(){
+  let h = '';
+  S.days.forEach(d => {
+    const P = profile(d.id), av = crewOn(d.id).length, ts = S.tasks.filter(t => t.day === d.id);
+    const last = ts.length ? Math.max(...ts.map(tEnd)) : toMin(d.start), short = P.peak - av, late = last > toMin(d.end);
+    h += `<div class="card ${short>0||late?'badc':''}">
+      <div class="ct">${esc(d.label)} · ${dateLabel(d.date)}</div>
+      <div class="big">${av} <small>on site</small> · ${P.peak} <small>needed at peak</small></div>
+      <div class="ln">${short>0?`<b class="bad">Short ${short} ${short===1?'person':'people'}</b>`:'<b class="ok">Enough people</b>'} · ${personHours(ts)} person-hrs</div>
+      <div class="ln">Last task wraps ${fmt(last)} ${late?`<b class="bad">— hall closes ${fmt(toMin(d.end))}</b>`:`<span class="ok">✓ before ${fmt(toMin(d.end))} close</span>`}</div>
+    </div>`;
+  });
+  $('#summary').innerHTML = h;
+}
+function renderWarnings(){
+  const W = analyze();
+  const un = S.tasks.filter(t => (t.assigned||[]).length < need(t));
+  let h = '<h2>Issues to resolve</h2>';
+  if (!W.length && !un.length) h += '<div class="okmsg">✓ No conflicts — every task fits its day and is fully staffed.</div>';
+  else {
+    h += '<ul class="warn">' + W.map(w => `<li class="${w.lvl}">${w.t?`<a href="#row-${w.t.id}" data-goto="${w.t.id}">${esc(w.t.name)}</a> (${shortDay(w.t.day)}) — `:''}${esc(w.msg)}</li>`).join('');
+    if (un.length) h += `<li class="warn">${un.length} task${un.length>1?'s are':' is'} not fully staffed: ${un.map(t => `<a href="#row-${t.id}" data-goto="${t.id}">${esc(t.name)}</a> (${(t.assigned||[]).length}/${need(t)})`).join(', ')}.</li>`;
+    h += '</ul>';
+  }
+  $('#warnings').innerHTML = h;
+}
+function renderGantt(){
+  let out = '';
+  S.days.forEach(d => {
+    const ts = S.tasks.filter(t => t.day === d.id), P = profile(d.id), span = P.e - P.s, av = crewOn(d.id).length;
+    const pct = m => (m - P.s) / span * 100, nh = span / 60;
+    const closeL = pct(toMin(d.end)), openL = pct(toMin(d.start));
+    const shade = `${openL>0?`<div class="preopen" style="width:${openL}%"></div>`:''}${closeL<100?`<div class="closed" style="left:${closeL}%"></div><div class="closeline" style="left:${closeL}%"></div>`:''}`;
+    let hours = ''; for (let m = P.s; m < P.e; m += 60) hours += `<div class="hr" style="left:${pct(m)}%;width:${100/nh}%">${fmt(m)}</div>`;
+    const rows = ts.map(t => {
+      const n = need(t), a = (t.assigned||[]).length, over = tEnd(t) > toMin(d.end);
+      const names = (t.assigned||[]).map(id => (crewById(id)||{}).name).filter(Boolean).map(x => x.split(' ')[0]).join(', ');
+      return `<div class="grow"><div class="glabel" data-goto="${t.id}" title="${esc(t.notes)}"><b>${esc(t.name)}</b><span>${fmt(tStart(t))}–${fmt(tEnd(t))} · ${n} ${n===1?'person':'people'}${a<n?` · <em>${a}/${n} assigned</em>`:''}</span></div>
+        <div class="gtrack">${shade}<div class="bar ${t.flex?'flex':''} ${over?'over':''}" data-id="${t.id}" style="left:${pct(tStart(t))}%;width:${t.hours*60/span*100}%;--c:${AREAS[t.area]||'#64748b'}" title="${esc(t.name)} · ${fmt(tStart(t))}–${fmt(tEnd(t))} · ${n} people${names?' · '+esc(names):''}">${esc(t.name)} · ${n}p${names?' — '+esc(names):''}<i class="rz"></i></div></div></div>`;
+    }).join('');
+    const maxN = Math.max(P.peak, av, 1);
+    const mp = P.slots.map(x => `<div class="mp ${x.n>av?'over':''}" style="left:${pct(x.m)}%;width:${30/span*100}%;height:${x.n/maxN*100}%" title="${fmt(x.m)}: ${x.n} needed / ${av} on site">${x.n||''}</div>`).join('');
+    out += `<div class="day"><div class="dayhead"><h3>${esc(d.label)} — ${dateLabel(d.date)}</h3><span>Hall ${fmt(toMin(d.start))}–${fmt(toMin(d.end))} · ${av} on site · peak need ${P.peak}${P.peak>av?` <b class="bad">(short ${P.peak-av})</b>`:''}${d.note?' · '+esc(d.note):''}</span></div>
+      <div class="grid" style="--hw:${100/nh}%">
+        <div class="grow"><div class="glabel" style="cursor:default"></div><div class="gtrack hours">${hours}</div></div>
+        ${rows || '<div class="grow"><div class="glabel mut">No tasks yet</div><div class="gtrack"></div></div>'}
+        <div class="grow mprow"><div class="glabel"><b>People needed</b><span>${av} on site</span></div><div class="gtrack mptrack">${shade}<div class="avline" style="bottom:${av/maxN*100}%"><span>${av} on site</span></div>${mp}</div></div>
+      </div></div>`;
+  });
+  $('#gantt').innerHTML = out;
+}
+function peopleOpts(v){
+  let h = `<option value="all" ${v==='all'?'selected':''}>Everyone</option>`;
+  for (let i = 0; i <= 20; i++) h += `<option value="${i}" ${v!=='all'&&Number(v)===i?'selected':''}>${i}</option>`;
+  return h;
+}
+function crewPicker(t){
+  const n = need(t), a = (t.assigned||[]);
+  const names = a.map(id => (crewById(id)||{}).name).filter(Boolean).map(x => x.split(' ')[0]).join(', ');
+  const items = S.crew.map(c => {
+    const on = c.days[t.day], chk = a.includes(c.id);
+    const clash = S.tasks.find(o => o !== t && o.day === t.day && !o.flex && !t.flex && (o.assigned||[]).includes(c.id) && overlaps(o,t));
+    return `<label class="${on?'':'na'}"><input type="checkbox" data-crew="${c.id}" ${chk?'checked':''}>${esc(c.name)}${on?'':' (not on site)'}${clash?`<span class="busy">on ${esc(clash.name)}</span>`:''}</label>`;
+  }).join('');
+  return `<details class="crewpick" data-pick="${t.id}" ${openPick===t.id?'open':''}><summary>${a.length<n?`<b class="short">${a.length}/${n}</b>`:`${a.length}/${n}`} ${esc(names)||'<span class="mut">pick…</span>'} ▾</summary><div class="menu">${items}</div></details>`;
+}
+function renderTasks(){
+  let h = '';
+  S.days.forEach(d => {
+    const ts = S.tasks.filter(t => t.day === d.id);
+    h += `<tr class="dayrow"><td colspan="14">${esc(d.label)} — ${dateLabel(d.date)}<span>${ts.length} tasks · ${personHours(ts)} person-hrs · ${crewOn(d.id).length} on site</span></td></tr>`;
+    ts.forEach(t => {
+      const n = need(t), over = tEnd(t) > toMin(d.end);
+      h += `<tr data-id="${t.id}" id="row-${t.id}">
+        <td><span class="sw" style="background:${AREAS[t.area]||'#64748b'}"></span></td>
+        <td style="min-width:190px"><input data-f="name" value="${esc(t.name)}"></td>
+        <td><select data-f="day">${S.days.map(x => `<option value="${x.id}" ${x.id===t.day?'selected':''}>${shortDay(x.id)}</option>`).join('')}</select></td>
+        <td><select data-f="area">${Object.keys(AREAS).map(k => `<option ${k===t.area?'selected':''}>${k}</option>`).join('')}</select></td>
+        <td><input type="time" step="900" data-f="start" value="${esc(t.start)}"></td>
+        <td><input type="number" min="0.25" step="0.25" data-f="hours" value="${t.hours}" class="num"></td>
+        <td class="end ${over?'bad':''}">${fmt(tEnd(t))}</td>
+        <td><select data-f="people">${peopleOpts(t.people)}</select></td>
+        <td class="mut">${fmtH(n*t.hours)}</td>
+        <td style="min-width:150px"><select data-f="after"><option value="">—</option>${S.tasks.filter(x => x.id!==t.id).map(x => `<option value="${x.id}" ${x.id===t.after?'selected':''}>${shortDay(x.day)} · ${esc(x.name)}</option>`).join('')}</select></td>
+        <td>${crewPicker(t)}</td>
+        <td class="c"><input type="checkbox" data-f="flex" ${t.flex?'checked':''}></td>
+        <td style="min-width:220px"><input data-f="notes" value="${esc(t.notes)}" title="${esc(t.notes)}"></td>
+        <td class="acts">${over?'<button data-act="split" title="Move the hours past close onto the next day">Split ✂</button> ':''}<button data-act="up" title="Move up">↑</button><button data-act="down" title="Move down">↓</button><button data-act="del" title="Delete">✕</button></td>
+      </tr>`;
+    });
+  });
+  $('#taskBody').innerHTML = h;
+}
+function renderCrew(){
+  $('#crewHead').innerHTML = `<tr><th>Name</th><th>Role</th>${S.days.map(d => `<th class="c" title="${esc(d.label)}">${shortDay(d.id)}<br><span style="font-weight:400;text-transform:none">${dateLabel(d.date).replace(/^\w+, /,'')}</span></th>`).join('')}<th>Only for task</th><th>Notes</th><th></th></tr>`;
+  $('#crewBody').innerHTML = S.crew.map(c => `<tr data-cid="${c.id}">
+    <td style="min-width:150px"><input data-cf="name" value="${esc(c.name)}"></td>
+    <td style="min-width:150px"><input data-cf="role" value="${esc(c.role)}"></td>
+    ${S.days.map(d => `<td class="c"><input type="checkbox" data-day="${d.id}" ${c.days[d.id]?'checked':''}></td>`).join('')}
+    <td><select data-cf="only"><option value="">Any task</option>${S.tasks.map(t => `<option value="${t.id}" ${c.only===t.id?'selected':''}>${shortDay(t.day)} · ${esc(t.name)}</option>`).join('')}</select></td>
+    <td style="min-width:160px"><input data-cf="notes" value="${esc(c.notes)}" title="${esc(c.notes)}"></td>
+    <td class="acts"><button data-cact="del" title="Remove">✕</button></td></tr>`).join('');
+}
+function renderDays(){
+  $('#dayBody').innerHTML = S.days.map(d => `<tr data-did="${d.id}">
+    <td style="min-width:150px"><input data-df="label" value="${esc(d.label)}"></td>
+    <td><input type="date" data-df="date" value="${esc(d.date)}"></td>
+    <td><input type="time" step="900" data-df="start" value="${esc(d.start)}"></td>
+    <td><input type="time" step="900" data-df="end" value="${esc(d.end)}"></td>
+    <td style="min-width:160px"><input data-df="note" value="${esc(d.note)}" title="${esc(d.note)}"></td>
+    <td class="acts"><button data-dact="del" title="Remove day">✕</button></td></tr>`).join('');
+}
+function renderPeople(){
+  $('#people').innerHTML = S.days.map(d => {
+    const crew = crewOn(d.id);
+    const rows = crew.map(c => {
+      const mine = S.tasks.filter(t => t.day === d.id && (t.assigned||[]).includes(c.id)).sort((a,b) => tStart(a)-tStart(b));
+      const hrs = mine.reduce((s,t) => s + Number(t.hours), 0);
+      return `<tr><td style="white-space:nowrap">${esc(c.name)}</td><td>${mine.map(t => `<span class="chip" style="--c:${AREAS[t.area]||'#64748b'}">${fmt(tStart(t))}–${fmt(tEnd(t))} ${esc(t.name)}</span>`).join('') || '<span class="mut">free</span>'}</td><td class="${hrs>12?'bad':''}" style="text-align:right">${fmtH(hrs)}h</td></tr>`;
+    }).join('');
+    return `<div><h3>${esc(d.label)} · ${dateLabel(d.date)}</h3><table>${rows || '<tr><td class="mut">Nobody marked on site</td></tr>'}</table></div>`;
+  }).join('');
+}
+function renderAll(){
+  $('#title').textContent = S.title;
+  document.title = S.title;
+  $('#dirty').innerHTML = dirty ? '<span class="dirty">Unsaved changes — click Save copy to keep them. </span>' : '';
+  renderSummary(); renderWarnings(); renderGantt(); renderTasks(); renderCrew(); renderDays(); renderPeople();
+}
+function changed(){ dirty = true; renderAll(); }
+
+/* ---------- events ---------- */
+const tb = $('#taskBody');
+tb.addEventListener('change', e => {
+  const tr = e.target.closest('tr[data-id]'); if (!tr) return;
+  const t = taskById(tr.dataset.id), el = e.target, f = el.dataset.f;
+  if (el.dataset.crew){
+    const id = el.dataset.crew; t.assigned = t.assigned || [];
+    if (el.checked){ if (!t.assigned.includes(id)) t.assigned.push(id); } else t.assigned = t.assigned.filter(x => x !== id);
+    openPick = t.id;
+  }
+  else if (f === 'flex') t.flex = el.checked;
+  else if (f === 'hours') t.hours = Math.max(0.25, parseFloat(el.value) || 0.25);
+  else if (f === 'people') t.people = el.value === 'all' ? 'all' : Number(el.value);
+  else if (f === 'start') t.start = el.value || t.start;
+  else if (f) t[f] = el.value;
+  changed();
+});
+tb.addEventListener('click', e => {
+  const b = e.target.closest('button[data-act]'); if (!b) return;
+  const t = taskById(b.closest('tr').dataset.id), i = S.tasks.indexOf(t), act = b.dataset.act;
+  if (act === 'del'){
+    if (!confirm(`Delete “${t.name}”?`)) return;
+    S.tasks.splice(i,1);
+    S.tasks.forEach(x => { if (x.after === t.id) x.after = t.after || ''; });
+    S.crew.forEach(c => { if (c.only === t.id) c.only = ''; });
+  } else if (act === 'up' || act === 'down'){
+    const same = S.tasks.map((x,k) => [x,k]).filter(([x]) => x.day === t.day).map(([,k]) => k);
+    const pos = same.indexOf(i), j = act === 'up' ? same[pos-1] : same[pos+1];
+    if (j === undefined) return;
+    [S.tasks[i], S.tasks[j]] = [S.tasks[j], S.tasks[i]];
+  } else if (act === 'split') splitTask(t);
+  changed();
+});
+document.addEventListener('toggle', e => {
+  const d = e.target; if (!d.matches || !d.matches('details.crewpick')) return;
+  if (d.open){ openPick = d.dataset.pick; document.querySelectorAll('details.crewpick[open]').forEach(x => { if (x !== d) x.open = false; }); }
+  else if (openPick === d.dataset.pick) openPick = null;
+}, true);
+document.addEventListener('click', e => {
+  if (!e.target.closest('details.crewpick')){ document.querySelectorAll('details.crewpick[open]').forEach(x => x.open = false); openPick = null; }
+  const g = e.target.closest('[data-goto]');
+  if (g){ e.preventDefault(); const row = document.getElementById('row-' + g.dataset.goto); if (row){ row.scrollIntoView({behavior:'smooth', block:'center'}); row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); } }
+});
+$('#crewBody').addEventListener('change', e => {
+  const tr = e.target.closest('tr[data-cid]'); if (!tr) return;
+  const c = crewById(tr.dataset.cid), el = e.target;
+  if (el.dataset.day) c.days[el.dataset.day] = el.checked;
+  else if (el.dataset.cf) c[el.dataset.cf] = el.value;
+  changed();
+});
+$('#crewBody').addEventListener('click', e => {
+  const b = e.target.closest('button[data-cact]'); if (!b) return;
+  const c = crewById(b.closest('tr').dataset.cid);
+  if (!confirm(`Remove ${c.name}?`)) return;
+  S.crew = S.crew.filter(x => x !== c);
+  S.tasks.forEach(t => t.assigned = (t.assigned||[]).filter(id => id !== c.id));
+  changed();
+});
+$('#dayBody').addEventListener('change', e => {
+  const tr = e.target.closest('tr[data-did]'); if (!tr) return;
+  const d = dayOf(tr.dataset.did), f = e.target.dataset.df;
+  if (f) d[f] = e.target.value || d[f];
+  changed();
+});
+$('#dayBody').addEventListener('click', e => {
+  const b = e.target.closest('button[data-dact]'); if (!b) return;
+  const d = dayOf(b.closest('tr').dataset.did);
+  if (S.tasks.some(t => t.day === d.id)){ alert('Move or delete the tasks on this day first.'); return; }
+  if (!confirm(`Remove ${d.label}?`)) return;
+  S.days = S.days.filter(x => x !== d);
+  S.crew.forEach(c => delete c.days[d.id]);
+  changed();
+});
+$('#addTask').onclick = () => {
+  const d = S.days[0];
+  S.tasks.push({id: uid('t'), day: d.id, name: 'New task', area: 'Both', start: d.start, hours: 1, people: 1, after: '', assigned: [], flex: false, notes: ''});
+  changed();
+};
+$('#addCrew').onclick = () => {
+  const days = {}; S.days.forEach(d => days[d.id] = true);
+  S.crew.push({id: uid('c'), name: 'New person', role: '', days, only: '', notes: ''});
+  changed();
+};
+$('#addDay').onclick = () => {
+  const last = S.days[S.days.length-1];
+  let date = '';
+  if (last && last.date){ const dt = new Date(last.date + 'T12:00:00'); dt.setDate(dt.getDate()+1); date = dt.toISOString().slice(0,10); }
+  const nd = {id: uid('d'), label: 'Day ' + (S.days.length+1), date, start: last ? last.start : '08:00', end: last ? last.end : '20:00', note: ''};
+  S.days.push(nd); S.crew.forEach(c => c.days[nd.id] = false);
+  changed();
+};
+$('#title').addEventListener('blur', e => { const v = e.target.textContent.trim(); if (v && v !== S.title){ S.title = v; changed(); } });
+$('#title').addEventListener('keydown', e => { if (e.key === 'Enter'){ e.preventDefault(); e.target.blur(); } });
+$('#btnAuto').onclick = () => { autoSchedule(); changed(); };
+$('#btnAssign').onclick = () => {
+  if (S.tasks.some(t => (t.assigned||[]).length) && !confirm('Auto-assign replaces all current crew assignments. Continue?')) return;
+  autoAssign(); changed();
+};
+$('#btnPrint').onclick = () => window.print();
+
+function download(name, text, type){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], {type}));
+  a.download = name; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+$('#btnSave').onclick = () => {
+  const data = Object.assign({}, S); delete data.firstRun;
+  const json = '\n' + JSON.stringify(data, null, 1).replace(/</g, '\\u003c') + '\n';
+  const html = TEMPLATE.replace(/(<script id="plan-data" type="application\/json">)[\s\S]*?(<\/script>)/, (m, a, b) => a + json + b);
+  download('IAAPA 2026 Build Plan.html', html, 'text/html');
+  dirty = false; renderAll();
+};
+$('#btnCsv').onclick = () => {
+  const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const rows = [['Day','Date','Task','Area','Start','End','Hours','People','Person-hours','Follows','Crew','Shared','Notes']];
+  S.days.forEach(d => S.tasks.filter(t => t.day === d.id).forEach(t => rows.push([
+    d.label, d.date, t.name, t.area, fmt(tStart(t)), fmt(tEnd(t)), t.hours, t.people === 'all' ? 'Everyone (' + need(t) + ')' : t.people,
+    fmtH(need(t) * t.hours), t.after ? (taskById(t.after)||{}).name : '', (t.assigned||[]).map(id => (crewById(id)||{}).name).join('; '), t.flex ? 'yes' : '', t.notes])));
+  download('IAAPA 2026 Build Plan.csv', rows.map(r => r.map(q).join(',')).join('\n'), 'text/csv');
+};
+
+/* drag & resize bars */
+let drag = null;
+const gantt = $('#gantt');
+gantt.addEventListener('pointerdown', e => {
+  const bar = e.target.closest('.bar'); if (!bar) return;
+  const t = taskById(bar.dataset.id), P = profile(t.day), track = bar.parentElement;
+  drag = {t, bar, mode: e.target.classList.contains('rz') ? 'rz' : 'mv', x0: e.clientX, start0: tStart(t), hours0: Number(t.hours), span: P.e - P.s, s: P.s, w: track.getBoundingClientRect().width, moved: false};
+  bar.setPointerCapture(e.pointerId); e.preventDefault();
+});
+gantt.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dm = Math.round((e.clientX - drag.x0) / drag.w * drag.span / 15) * 15;
+  if (dm === 0 && !drag.moved) return;
+  drag.moved = true;
+  if (drag.mode === 'mv') drag.t.start = toHM(drag.start0 + dm);
+  else drag.t.hours = Math.max(0.25, drag.hours0 + dm / 60);
+  drag.bar.style.left = ((tStart(drag.t) - drag.s) / drag.span * 100) + '%';
+  drag.bar.style.width = (drag.t.hours * 60 / drag.span * 100) + '%';
+  drag.bar.firstChild.textContent = `${drag.t.name} · ${fmt(tStart(drag.t))}–${fmt(tEnd(drag.t))} `;
+});
+window.addEventListener('pointerup', () => {
+  if (!drag) return;
+  const d = drag; drag = null;
+  if (d.moved) changed();
+  else { const row = document.getElementById('row-' + d.t.id); if (row){ row.scrollIntoView({behavior:'smooth', block:'center'}); row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); } }
+});
+window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+if (S.firstRun){ autoAssign(); delete S.firstRun; }
+renderAll();
+</script>
+</body>
+</html>
