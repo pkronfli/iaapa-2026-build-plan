@@ -94,6 +94,9 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
 .menu label:hover{background:#f3f4f6}
 .menu label.na{color:#9ca3af}
 .menu .busy{color:var(--warn);font-size:11px;margin-left:auto}
+.menu .pin{margin-left:auto;opacity:.35;cursor:pointer;padding:0 2px}
+.menu .busy + .pin{margin-left:6px}
+.menu .pin.on,.menu .pin:hover{opacity:1}
 .two{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin:12px 24px}
 .two section{margin:0}
 .ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
@@ -188,11 +191,11 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   {"id":"c5","name":"Obe Klopfenstein","role":"Product demo / sales","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving down with Jason — arrives Friday"},
   {"id":"c7","name":"Aaliyah May","role":"Dome bouncer + runs (brand ambassador)","days":{"d1":true,"d2":true,"d3":true},"only":"t7","from":"","notes":"On site for runs — set to Infrastructure on Day 1"},
   {"id":"c9","name":"Allen Jowers","role":"Sales closer + build help","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"11:00","notes":"Arrives Sat ~11 AM"},
+  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales + dome build","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Locked on dome setup — confirm arrival time Sat"},
   {"id":"cg","name":"GES labor (1)","role":"Sign assembly — GES #88373-85A49","days":{"d1":true,"d2":false,"d3":false},"only":"t3","from":"09:00","notes":"Booked Sat 9:00 AM, up to 2 hrs"},
   {"id":"c11","name":"Luis Gaytan","role":"Sales closer / Nexus support","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"Arrives Sunday"},
   {"id":"c3","name":"Bryce Urbantke","role":"Production + demo","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"TENTATIVE — recovering after India; coming Sat or Sun once rested"},
   {"id":"c6","name":"Brent Carrington","role":"Operations Manager","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arrival TBD — tick Day 1/2 if he's coming early"},
-  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":""},
   {"id":"c10","name":"Brenda Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arriving with Allen? Tick Day 1 if so"},
   {"id":"c12","name":"Cherryll Anderson","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
   {"id":"c13","name":"Marcie Kazen","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
@@ -202,12 +205,12 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   {"id":"t1","day":"d1","name":"Unloading","area":"Both","start":"08:00","hours":2,"people":4,"after":"","assigned":[],"flex":false,"notes":"Box truck + turf U-Haul. GES forklift / material handling."},
   {"id":"t2","day":"d1","name":"Turf & electrical setup","area":"Both","start":"10:00","hours":2,"people":3,"after":"t1","assigned":[],"flex":false,"notes":"4 rolls 15×20 (+9×10 spare). W1359 outlet at center; W1455 2 outlets back-right."},
   {"id":"t3","day":"d1","name":"Sign setup","area":"W1455","start":"12:00","hours":2,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"20' ring, 245 lb. GES worker booked 9:00 AM — move this task or the GES time. OCCC rigging hangs it; must be up before the dome."},
-  {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":8,"people":3,"after":"t2","assigned":[],"flex":false,"notes":"2 shooting bays, 6' × 12'6\" × 8'3\". 12 hrs total — 8 Sat, 4 Sun."},
+  {"id":"t4","day":"d1","name":"Battle Bay setup","area":"W1359","start":"12:00","hours":8,"people":3,"after":"t2","assigned":["c2","c5"],"pinned":["c2","c5"],"flex":false,"notes":"2 shooting bays, Jason + Obe locked on Battle Bay. 2 shooting bays, 6' × 12'6\" × 8'3\". 12 hrs total — 8 Sat, 4 Sun."},
   {"id":"t5","day":"d1","name":"Demo Arena setup","area":"W1359","start":"12:00","hours":6,"people":2,"after":"t2","assigned":[],"flex":false,"notes":"Netted arena, frame, bunkers."},
-  {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":6,"people":2,"after":"t3","assigned":[],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Goes in under the hung sign. 12 hrs total — 6 Sat, 6 Sun."},
+  {"id":"t6","day":"d1","name":"Dome setup","area":"W1455","start":"14:00","hours":6,"people":2,"after":"t3","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":"12' freestanding dome + blaster net & straps. Tarun locked on dome. Goes in under the hung sign. 12 hrs total — 6 Sat, 6 Sun."},
   {"id":"t7","day":"d1","name":"Infrastructure","area":"Both","start":"08:00","hours":12,"people":1,"after":"","assigned":[],"flex":false,"notes":"On and off all day: power runs, internet (W1455), furniture, trash, truck runs. Tick Shared if this person also works other tasks."},
-  {"id":"t4b","day":"d2","name":"Battle Bay setup (cont.)","area":"W1359","start":"08:00","hours":4,"people":3,"after":"t4","assigned":[],"flex":false,"notes":"Remaining Battle Bay build hours."},
-  {"id":"t6b","day":"d2","name":"Dome setup (cont.)","area":"W1455","start":"08:00","hours":6,"people":2,"after":"t6","assigned":[],"flex":false,"notes":"Remaining dome build hours."},
+  {"id":"t4b","day":"d2","name":"Battle Bay setup (cont.)","area":"W1359","start":"08:00","hours":4,"people":3,"after":"t4","assigned":["c2","c5"],"pinned":["c2","c5"],"flex":false,"notes":"Remaining Battle Bay build hours."},
+  {"id":"t6b","day":"d2","name":"Dome setup (cont.)","area":"W1455","start":"08:00","hours":6,"people":2,"after":"t6","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":"Remaining dome build hours."},
   {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"12:00","hours":5,"people":1,"after":"t4b","assigned":[],"flex":false,"notes":""},
   {"id":"t9","day":"d2","name":"Demo Arena testing","area":"W1359","start":"08:00","hours":2,"people":1,"after":"t5","assigned":[],"flex":false,"notes":""},
   {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"14:00","hours":5,"people":2,"after":"t6b","assigned":[],"flex":false,"notes":""},
@@ -323,11 +326,13 @@ function autoAssign(){
     const ts = S.tasks.filter(t => t.day === d.id).sort((a,b) => tStart(a)-tStart(b) || S.tasks.indexOf(a)-S.tasks.indexOf(b));
     for (const t of ts){
       const n = need(t), busy = new Set();
-      if (!t.flex) ts.forEach(o => { if (o !== t && !o.flex && overlaps(o,t)) o.assigned.forEach(id => busy.add(id)); });
+      if (!t.flex) ts.forEach(o => { if (o !== t && !o.flex && overlaps(o,t)){ o.assigned.forEach(id => busy.add(id)); (o.pinned||[]).forEach(id => busy.add(id)); } });
+      const pin = new Set(t.pinned||[]);
+      pin.forEach(id => busy.delete(id));
       const pref = new Set();
       if (t.after){ const p = taskById(t.after); if (p) (p.assigned||[]).forEach(id => pref.add(id)); }
       const cands = crew.filter(c => !busy.has(c.id) && availAt(c, d.id, tStart(t)) && (t.people === 'all' || !c.only || c.only === t.id))
-        .sort((a,b) => ((b.only===t.id)-(a.only===t.id)) || (pref.has(b.id)-pref.has(a.id)) || (load[a.id]-load[b.id]));
+        .sort((a,b) => (pin.has(b.id)-pin.has(a.id)) || ((b.only===t.id)-(a.only===t.id)) || (pref.has(b.id)-pref.has(a.id)) || (load[a.id]-load[b.id]));
       t.assigned = cands.slice(0, n).map(c => c.id);
       t.assigned.forEach(id => load[id] += Number(t.hours)||0);
     }
@@ -405,12 +410,13 @@ function peopleOpts(v){
 }
 function crewPicker(t){
   const n = need(t), a = (t.assigned||[]);
-  const names = a.map(id => (crewById(id)||{}).name).filter(Boolean).map(x => x.split(' ')[0]).join(', ');
+  const names = a.map(id => { const c = crewById(id); return c ? c.name.split(' ')[0] + ((t.pinned||[]).includes(id) ? '🔒' : '') : ''; }).filter(Boolean).join(', ');
   const items = S.crew.map(c => {
     const on = c.days[t.day] && availAt(c, t.day, tStart(t)), chk = a.includes(c.id);
     const why = !c.days[t.day] ? ' (not on site)' : (!on ? ` (arrives ${fmt(arrivesAt(c, t.day))})` : '');
     const clash = S.tasks.find(o => o !== t && o.day === t.day && !o.flex && !t.flex && (o.assigned||[]).includes(c.id) && overlaps(o,t));
-    return `<label class="${on?'':'na'}"><input type="checkbox" data-crew="${c.id}" ${chk?'checked':''}>${esc(c.name)}${why}${clash?`<span class="busy">on ${esc(clash.name)}</span>`:''}</label>`;
+    const pinned = (t.pinned||[]).includes(c.id);
+    return `<label class="${on?'':'na'}"><input type="checkbox" data-crew="${c.id}" ${chk?'checked':''}>${esc(c.name)}${why}${clash?`<span class="busy">on ${esc(clash.name)}</span>`:''}<span class="pin ${pinned?'on':''}" data-pin="${c.id}" title="Lock: Auto-assign always keeps this person on this task">${pinned?'🔒':'🔓'}</span></label>`;
   }).join('');
   return `<details class="crewpick" data-pick="${t.id}" ${openPick===t.id?'open':''}><summary>${a.length<n?`<b class="short">${a.length}/${n}</b>`:`${a.length}/${n}`} ${esc(names)||'<span class="mut">pick…</span>'} ▾</summary><div class="menu">${items}</div></details>`;
 }
@@ -499,6 +505,15 @@ tb.addEventListener('change', e => {
   changed();
 });
 tb.addEventListener('click', e => {
+  const p = e.target.closest('[data-pin]');
+  if (p){
+    e.preventDefault(); e.stopPropagation();
+    const t = taskById(p.closest('tr').dataset.id), id = p.dataset.pin;
+    t.pinned = t.pinned || []; t.assigned = t.assigned || [];
+    if (t.pinned.includes(id)) t.pinned = t.pinned.filter(x => x !== id);
+    else { t.pinned.push(id); if (!t.assigned.includes(id)) t.assigned.push(id); }
+    openPick = t.id; changed(); return;
+  }
   const b = e.target.closest('button[data-act]'); if (!b) return;
   const t = taskById(b.closest('tr').dataset.id), i = S.tasks.indexOf(t), act = b.dataset.act;
   if (act === 'del'){
