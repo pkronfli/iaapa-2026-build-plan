@@ -186,19 +186,19 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
  ],
  "crew":[
   {"id":"c1","name":"Patrick Kronfli","role":"Production lead","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Truck crew — in Orlando Friday"},
-  {"id":"c2","name":"Jason Gholston","role":"Product / arena build","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving the box truck down — arrives Friday"},
+  {"id":"c2","name":"Jason Gholston","role":"Battle Bay lead","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving the box truck down — arrives Friday"},
   {"id":"c4","name":"Kyler Mancuso","role":"Production + demo","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Truck crew — arrives Friday"},
-  {"id":"c5","name":"Obe Klopfenstein","role":"Product demo / sales","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving down with Jason — arrives Friday"},
+  {"id":"c5","name":"Obe Klopfenstein","role":"Battle Bay lead (+ demo / sales)","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Driving down with Jason — arrives Friday"},
   {"id":"c7","name":"Aaliyah May","role":"Dome bouncer + runs (brand ambassador)","days":{"d1":true,"d2":true,"d3":true},"only":"t7","from":"","notes":"On site for runs — set to Infrastructure on Day 1"},
   {"id":"c9","name":"Allen Jowers","role":"Sales closer + build help","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"11:00","notes":"Arrives Sat ~11 AM"},
-  {"id":"c8","name":"Tarun Nimmagadda","role":"GoPlay HQ lead / sales + dome build","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Locked on dome setup — confirm arrival time Sat"},
+  {"id":"c8","name":"Tarun Nimmagadda","role":"Dome lead (+ GoPlay HQ lead / sales)","days":{"d1":true,"d2":true,"d3":true},"only":"","from":"","notes":"Dome lead, locked on dome setup + testing — confirm arrival time Sat"},
   {"id":"cg","name":"GES labor (1)","role":"Sign assembly — GES #88373-85A49","days":{"d1":true,"d2":false,"d3":false},"only":"t3","from":"09:00","notes":"Booked Sat 9:00 AM, up to 2 hrs"},
   {"id":"c11","name":"Luis Gaytan","role":"Sales closer / Nexus support","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"Arrives Sunday"},
   {"id":"c3","name":"Bryce Urbantke","role":"Production + demo","days":{"d1":false,"d2":true,"d3":true},"only":"","from":"","notes":"TENTATIVE — recovering after India; coming Sat or Sun once rested"},
   {"id":"c6","name":"Brent Carrington","role":"Operations Manager","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arrival TBD — tick Day 1/2 if he's coming early"},
-  {"id":"c10","name":"Brenda Jowers","role":"Sales closer","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Arriving with Allen? Tick Day 1 if so"},
-  {"id":"c12","name":"Cherryll Anderson","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
-  {"id":"c13","name":"Marcie Kazen","role":"Greeter / check-in","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":""},
+  {"id":"c10","name":"Brenda Jowers","role":"Sales closer + sales space setup","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Sales spaces + beautification Mon"},
+  {"id":"c12","name":"Cherryll Anderson","role":"Greeter / check-in + sales space setup","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Sales spaces + beautification Mon"},
+  {"id":"c13","name":"Marcie Kazen","role":"Greeter / check-in + sales space setup","days":{"d1":false,"d2":false,"d3":true},"only":"","from":"","notes":"Sales spaces + beautification Mon"},
   {"id":"c14","name":"GoPlay onboarding (TBD)","role":"GoPlay HQ","days":{"d1":false,"d2":false,"d3":true},"only":"","notes":"Name + badge still needed"}
  ],
  "tasks":[
@@ -213,8 +213,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   {"id":"t6b","day":"d2","name":"Dome setup (cont.)","area":"W1455","start":"08:00","hours":6,"people":2,"after":"t6","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":"Remaining dome build hours."},
   {"id":"t8","day":"d2","name":"Battle Bay tech setup & testing","area":"W1359","start":"12:00","hours":5,"people":1,"after":"t4b","assigned":[],"flex":false,"notes":""},
   {"id":"t9","day":"d2","name":"Demo Arena testing","area":"W1359","start":"08:00","hours":2,"people":1,"after":"t5","assigned":[],"flex":false,"notes":""},
-  {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"14:00","hours":5,"people":2,"after":"t6b","assigned":[],"flex":false,"notes":""},
-  {"id":"t11","day":"d3","name":"Sales spaces setup","area":"W1455","start":"08:00","hours":10,"people":3,"after":"","assigned":[],"flex":false,"notes":"Lounge, check-in podium, TVs, furniture, merch."},
+  {"id":"t10","day":"d2","name":"Dome testing","area":"W1455","start":"14:00","hours":5,"people":2,"after":"t6b","assigned":["c8"],"pinned":["c8"],"flex":false,"notes":""},
+  {"id":"t11","day":"d3","name":"Sales spaces setup & booth beautification","area":"Both","start":"08:00","hours":10,"people":3,"after":"","assigned":["c12","c13","c10"],"pinned":["c12","c13","c10"],"flex":false,"notes":"Cherryll, Marcie + Brenda (locked). Lounge, check-in podium, TVs, furniture, merch, beautifying both booths. Confirm they land early Monday."},
   {"id":"t12","day":"d3","name":"Training","area":"Team","start":"18:00","hours":3,"people":"all","after":"t11","assigned":[],"flex":false,"notes":"Everyone on site. Move earlier once show-crew flights are known."}
  ]
 }
