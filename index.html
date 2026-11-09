@@ -38,6 +38,12 @@ ul.warn li:before{content:"";position:absolute;left:4px;top:11px;width:9px;heigh
 ul.warn li.bad:before{background:var(--bad)}
 ul.warn a{color:inherit;font-weight:600}
 .okmsg{color:var(--ok);font-weight:600}
+.sync{font-weight:600;border-radius:999px;padding:1px 8px;font-size:12px}
+.sync:empty{display:none}
+.sync.ok{color:var(--ok);background:#ecfdf3}
+.sync.saving{color:var(--mut);background:#f3f4f6}
+.sync.err{color:var(--bad);background:#fef2f2;cursor:pointer}
+#whoami{color:var(--mut);font-size:12px;margin-left:6px}
 .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-bottom:10px}
 .legend i{display:inline-block;width:14px;height:10px;border-radius:3px;vertical-align:-1px;margin-right:5px}
 .day{margin-bottom:22px}
@@ -124,10 +130,10 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
     <button id="btnAssign" title="Fill every task with available crew, avoiding double-booking">Auto-assign crew</button>
     <button id="btnCsv">Export CSV</button>
     <button id="btnPrint">Print</button>
-    <button id="btnSave" class="primary">Save copy (.html)</button>
+    <button id="btnSave" class="primary">Download copy (.html)</button>
   </div>
 </header>
-<div class="note"><span id="dirty"></span><a href="#warnings" id="issueLink"></a> Edit anything below — drag bars to move them, drag a bar's right edge to change hours. Edits live in this page until you click <b>Save copy</b>, which downloads a new .html with your changes built in.</div>
+<div class="note"><span id="syncStatus" class="sync"></span> <span id="dirty"></span><a href="#warnings" id="issueLink"></a> <span id="howto">Edit anything below — drag bars to move them, drag a bar's right edge to change hours. Edits live in this page until you click <b>Download copy</b>, which saves a new .html with your changes built in.</span> <a href="#" id="whoami" style="display:none"></a></div>
 
 <section class="bare"><div id="summary" class="cards"></div></section>
 
@@ -182,6 +188,14 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
  "firstRun": true,
  "days": [
   {
+   "id": "d0",
+   "label": "Friday — Pre-production",
+   "date": "2026-11-13",
+   "start": "08:00",
+   "end": "20:00",
+   "note": "Full pre-production day. Turf pickup at Turf Layers + U-Haul (Fri noon) happen today."
+  },
+  {
    "id": "d1",
    "label": "Saturday — Build",
    "date": "2026-11-14",
@@ -214,7 +228,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": true
    },
    "only": "",
    "from": "",
@@ -227,7 +242,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": true
    },
    "only": "",
    "from": "",
@@ -240,7 +256,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -253,7 +270,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": true
    },
    "only": "",
    "from": "",
@@ -266,7 +284,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": true
    },
    "only": "",
    "from": "",
@@ -279,7 +298,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "11:00",
@@ -292,7 +312,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -305,7 +326,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": true,
     "d2": false,
-    "d3": false
+    "d3": false,
+    "d0": false
    },
    "only": "t3",
    "from": "09:00",
@@ -318,7 +340,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": false,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -331,7 +354,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": false,
     "d2": true,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -344,7 +368,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": false,
     "d2": false,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -357,7 +382,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": false,
     "d2": false,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -370,7 +396,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
    "days": {
     "d1": false,
     "d2": false,
-    "d3": true
+    "d3": true,
+    "d0": false
    },
    "only": "",
    "from": "",
@@ -378,6 +405,46 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
   }
  ],
  "tasks": [
+  {
+   "id": "t16",
+   "day": "d0",
+   "name": "Pre-production — Patrick + Aaliyah",
+   "area": "Both",
+   "start": "08:00",
+   "hours": 10,
+   "people": 2,
+   "after": "",
+   "assigned": [
+    "c1",
+    "c7"
+   ],
+   "pinned": [
+    "c1",
+    "c7"
+   ],
+   "flex": false,
+   "notes": "Full day of pre-production."
+  },
+  {
+   "id": "t17",
+   "day": "d0",
+   "name": "Pre-production — Jason + Obe",
+   "area": "Both",
+   "start": "08:00",
+   "hours": 10,
+   "people": 2,
+   "after": "",
+   "assigned": [
+    "c2",
+    "c5"
+   ],
+   "pinned": [
+    "c2",
+    "c5"
+   ],
+   "flex": false,
+   "notes": "Full day of pre-production (after driving the truck down)."
+  },
   {
    "id": "t1",
    "day": "d1",
@@ -680,6 +747,8 @@ details.crewpick .menu{position:absolute;z-index:30;background:#fff;border:1px s
 </script>
 <script>
 const TEMPLATE = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+/* Live sync: Google Apps Script web-app URL. Leave blank for a stand-alone file. */
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycbw64erXTnjwHe-ilenaJchSLKK8FuLWSvee3TU9WscOy_euKTGc0fPf9UWfiFVepEXELQ/exec';
 const $ = s => document.querySelector(s);
 let S = JSON.parse(document.getElementById('plan-data').textContent);
 const AREAS = {'W1359':'#2563eb','W1455':'#ea580c','Both':'#64748b','Team':'#7c3aed'};
@@ -943,10 +1012,10 @@ function renderPeople(){
 function renderAll(){
   $('#title').textContent = S.title;
   document.title = S.title;
-  $('#dirty').innerHTML = dirty ? '<span class="dirty">Unsaved changes — click Save copy to keep them. </span>' : '';
+  $('#dirty').innerHTML = (!SYNC_URL && dirty) ? '<span class="dirty">Unsaved changes — click Download copy to keep them. </span>' : '';
   renderSummary(); renderWarnings(); renderGantt(); renderTasks(); renderCrew(); renderDays(); renderPeople();
 }
-function changed(){ dirty = true; renderAll(); }
+function changed(){ dirty = true; renderAll(); if (typeof queueSave === 'function') queueSave(); }
 
 /* ---------- events ---------- */
 const tb = $('#taskBody');
@@ -1105,10 +1174,109 @@ window.addEventListener('pointerup', () => {
   if (d.moved) changed();
   else { const row = document.getElementById('row-' + d.t.id); if (row){ row.scrollIntoView({behavior:'smooth', block:'center'}); row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); } }
 });
-window.addEventListener('beforeunload', e => { if (dirty){ e.preventDefault(); e.returnValue = ''; } });
+/* ---------- live sync (Google Apps Script backend) ---------- */
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
+};
+const sync = {on: !!SYNC_URL, version: 0, base: null, timer: null, inflight: false, pending: false, state: ''};
+const clone = o => JSON.parse(JSON.stringify(o));
+const timeStr = d => { try { return d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); } catch(e){ return ''; } };
+const isEditing = () => { const a = document.activeElement; return !!a && (/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName) || a.isContentEditable); };
+function setSync(state, msg){ sync.state = state; const el = $('#syncStatus'); el.className = 'sync ' + state; el.textContent = msg; }
+function showWho(){ const n = store.get('bp_name'), w = $('#whoami'); if (n){ w.style.display = ''; w.textContent = `editing as ${n} · change`; } }
+function creds(){
+  let pass = store.get('bp_pass'), by = store.get('bp_name');
+  if (!pass){ pass = prompt('Enter the team passcode to save changes (ask Patrick):'); if (!pass) return null; pass = pass.trim(); store.set('bp_pass', pass); }
+  if (!by){ by = (prompt('Your first name (shown as the last editor):') || 'someone').trim(); store.set('bp_name', by); }
+  showWho();
+  return {pass, by};
+}
+function snapshot(){ const d = clone(S); delete d.firstRun; return d; }
+function queueSave(){
+  if (!sync.on) return;
+  sync.pending = true; setSync('saving','Saving…');
+  clearTimeout(sync.timer); sync.timer = setTimeout(pushSave, 700);
+}
+function merge3(base, local, remote){
+  if (!remote || !base) return local;
+  const eq = (a,b) => JSON.stringify(a) === JSON.stringify(b), out = clone(remote);
+  if (local.title !== base.title) out.title = local.title;
+  for (const k of ['days','crew','tasks']){
+    const B = new Map((base[k]||[]).map(x => [x.id,x])), L = new Map((local[k]||[]).map(x => [x.id,x])), R = new Map((remote[k]||[]).map(x => [x.id,x]));
+    const res = [];
+    for (const r of remote[k]||[]){
+      if (B.has(r.id) && !L.has(r.id)) continue;                       // deleted here
+      res.push(L.has(r.id) && B.has(r.id) && !eq(L.get(r.id), B.get(r.id)) ? L.get(r.id) : r);
+    }
+    (local[k]||[]).forEach((l, i) => {
+      const keep = (!R.has(l.id) && !B.has(l.id)) || (!R.has(l.id) && B.has(l.id) && !eq(l, B.get(l.id)));
+      if (!keep) return;
+      const prev = i > 0 ? local[k][i-1].id : null, pi = res.findIndex(x => x.id === prev);
+      res.splice(pi + 1, 0, l);
+    });
+    out[k] = res;
+  }
+  return out;
+}
+async function pushSave(){
+  if (!sync.on) return;
+  if (sync.inflight){ clearTimeout(sync.timer); sync.timer = setTimeout(pushSave, 500); return; }
+  const c = creds();
+  if (!c){ sync.pending = true; setSync('err','Not saved — click here and enter the team passcode'); return; }
+  sync.inflight = true; sync.pending = false;
+  const data = snapshot();
+  let retry = false;
+  try {
+    const r = await fetch(SYNC_URL, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({pass: c.pass, by: c.by, baseVersion: sync.version, data})});
+    const j = await r.json();
+    if (j.error === 'wrong passcode'){ store.del('bp_pass'); sync.pending = true; setSync('err','Wrong passcode — click here to try again'); }
+    else if (j.conflict){
+      S = merge3(sync.base, data, j.data); sync.version = j.version; sync.base = clone(j.data);
+      renderAll(); retry = true;
+    }
+    else if (j.ok){ sync.version = j.version; sync.base = data; dirty = false; if (!sync.pending) setSync('ok', 'All changes saved · ' + timeStr(new Date(j.updatedAt))); }
+    else { sync.pending = true; setSync('err','Save failed — click to retry'); }
+  } catch(e){ sync.pending = true; setSync('err','Offline — will retry'); setTimeout(() => { if (sync.pending) pushSave(); }, 5000); }
+  sync.inflight = false;
+  if (retry || (sync.pending && sync.state === 'saving')) pushSave();
+}
+async function pull(initial){
+  if (!sync.on) return;
+  const busy = () => sync.pending || sync.inflight || drag || openPick || isEditing();
+  if (!initial && busy()) return;
+  try {
+    const r = await fetch(SYNC_URL + (SYNC_URL.includes('?') ? '&' : '?') + 'since=' + (initial ? -1 : sync.version) + '&t=' + Date.now());
+    const j = await r.json();
+    if (j.unchanged) return;
+    if (j.data){
+      if (!initial && busy()) return;
+      S = j.data; sync.version = j.version; sync.base = clone(j.data); dirty = false; renderAll();
+      setSync('ok', (initial ? 'Live · ' : 'Updated · ') + (j.updatedBy ? 'last edit by ' + j.updatedBy + ' ' : '') + timeStr(new Date(j.updatedAt)));
+    } else if (initial){
+      if (S.firstRun){ autoSchedule(); autoAssign(); delete S.firstRun; }
+      sync.version = j.version || 0; renderAll(); queueSave();
+    }
+  } catch(e){
+    if (initial){ if (S.firstRun){ autoSchedule(); autoAssign(); delete S.firstRun; } renderAll(); setSync('err','Offline — showing the built-in copy'); }
+  }
+}
+$('#syncStatus').addEventListener('click', () => { if (sync.state === 'err') pushSave(); });
+$('#whoami').addEventListener('click', e => { e.preventDefault(); store.del('bp_name'); store.del('bp_pass'); $('#whoami').style.display = 'none'; if (sync.on) pushSave(); });
+window.addEventListener('beforeunload', e => { if (sync.on ? (sync.pending || sync.inflight) : dirty){ e.preventDefault(); e.returnValue = ''; } });
 
-if (S.firstRun){ autoSchedule(); autoAssign(); delete S.firstRun; }
-renderAll();
+if (sync.on){
+  $('#howto').innerHTML = 'Edits save automatically and sync to everyone on this link (team passcode needed to edit). Drag bars to move them; drag a bar’s right edge to change hours.';
+  showWho();
+  renderAll(); setSync('saving','Loading latest…');
+  pull(true);
+  setInterval(() => { if (document.visibilityState === 'visible') pull(false); }, 15000);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pull(false); });
+} else {
+  if (S.firstRun){ autoSchedule(); autoAssign(); delete S.firstRun; }
+  renderAll();
+}
 </script>
 </body>
 </html>
