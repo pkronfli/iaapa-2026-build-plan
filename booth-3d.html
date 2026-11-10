@@ -50,7 +50,7 @@ button.on{background:#111827;color:#fff;border-color:#111827}
     <span class="sw" style="background:#dc2626"></span><span>OCCC power drops (120V 20A)</span>
     <span class="sw" style="background:#1e40af"></span><span>Smart City internet drop</span>
     <span class="sw" style="background:#bcd3ea"></span><span>Aisles on all 4 sides of W1359</span>
-    <span class="sw" style="background:#c6f432"></span><span>Arena entrance + queue in the front aisle</span>
+    <span class="sw" style="background:#b07a46"></span><span>Welcome desk + queue (inside booth); arena entry from back aisle</span>
     <span class="sw" style="background:#e7e3d6"></span><span>Neighboring booths</span>
   </div>
   </div>
@@ -153,23 +153,18 @@ box(20, 0.15, 40, 0, 0, 0, mat(0xffffff, {map:turfA}));
 const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(20, 0.2, 40)), new THREE.LineBasicMaterial({color:0x1f3d18}));
 edge.position.set(10, 0.1, 20); scene.add(edge);
 
-// check-in counter just inside the front edge; entrance + queue line out in the front (top) aisle
+// welcome / check-in desk at center front, stanchion queue inside the booth edge
 const counter = mat(0x2b2f36), wood = mat(0xb07a46);
-box(7, 3.5, 2, 1, 0, 1.5, counter);
-box(7.4, 0.2, 2.4, 0.8, 3.5, 1.3, wood);
-label('Check-in', 4.5, 6, 2.5, {size:0.85});
-// entrance arch at the top edge, center
-const archM = mat(0x111418);
-box(0.5, 9, 0.5, 8, 0, -0.3, archM); box(0.5, 9, 0.5, 11.5, 0, -0.3, archM); box(4, 1.4, 0.5, 8, 8, -0.3, mat(0xc6f432, {emissive:0x8bbf1c, emissiveIntensity:0.5}));
-label('ARENA ENTRANCE', 9.9, 11.2, -0.1, {size:1.0, color:'#111418', bg:'rgba(198,244,50,0.95)'});
-// stanchion queue in the front aisle (two lanes, z -1 → -7)
+box(8, 3.5, 2, 6, 0, 3.8, counter);
+box(8.4, 0.2, 2.4, 5.8, 3.5, 3.6, wood);
+label('Welcome / check-in desk', 10, 6.2, 4.8, {size:0.9});
 const postM = mat(0x111111, {metalness:0.6, roughness:0.35}), beltM = mat(0x1d1d1d);
 function post(x,z){ const p = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3,12), postM); p.position.set(x, 1.65, z); p.castShadow = true; scene.add(p); const b = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.15,16), postM); b.position.set(x,0.22,z); scene.add(b); }
 function belt(x1,z1,x2,z2){ const len = Math.hypot(x2-x1,z2-z1); const m = new THREE.Mesh(new THREE.BoxGeometry(len, 0.15, 0.05), beltM); m.position.set((x1+x2)/2, 2.9, (z1+z2)/2); m.rotation.y = -Math.atan2(z2-z1, x2-x1); scene.add(m); }
-const qx = [6, 9.75, 13.5], qz = [-1, -4, -7];
-qx.forEach(x=>qz.forEach(z=>post(x,z)));
-qz.forEach(z=>{ belt(6,z,9.75,z); }); belt(6,-1,6,-7); belt(13.5,-1,13.5,-7); belt(9.75,-4,9.75,-7);
-label('Queue line', 9.75, 5.2, -5, {size:0.8});
+// two-lane queue inside the front 3.5 ft of the booth, open at both outer ends
+[2,6,10,14,18].forEach(x=>{ post(x,0.8); post(x,2.6); });
+belt(6,0.8,14,0.8); belt(2,2.6,18,2.6);
+label('Queue (inside booth)', 10, 4.6, 1.7, {size:0.75});
 
 // shooting bays: 6' W x 12'6" D x 8'3" H
 const bayFrame = mat(0x2a2a2a, {metalness:0.4, roughness:0.5}), bayPanel = mat(0xf0a07e, {roughness:0.7}), screen = mat(0x0b1220, {emissive:0x1e5bd6, emissiveIntensity:0.35});
@@ -192,8 +187,8 @@ function rail(x1,z1,x2,z2){ const len = Math.hypot(x2-x1,z2-z1); const r = new T
 rail(ax0,az0,ax1,az0); rail(ax0,az1,ax1,az1); rail(ax0,az0,ax0,az1); rail(ax1,az0,ax1,az1); rail(ax0,26.7,ax1,26.7); rail(ax0,33.1,ax1,33.1);
 const netM = new THREE.MeshBasicMaterial({color:0x111111, transparent:true, opacity:0.22, side:THREE.DoubleSide, depthWrite:false});
 function netWall(x1,z1,x2,z2){ const len = Math.hypot(x2-x1,z2-z1); const m = new THREE.Mesh(new THREE.PlaneGeometry(len, ah, 1, 1), netM); m.position.set((x1+x2)/2, ah/2, (z1+z2)/2); m.rotation.y = -Math.atan2(z2-z1, x2-x1); groups.net.add(m); }
-netWall(ax0,az1,ax1,az1); netWall(ax0,az0,ax0,az1); netWall(ax1,az0,ax1,az1);
-netWall(ax0,az0,8.5,az0); netWall(11.5,az0,ax1,az0);   // front net with a 3' entry gap
+netWall(ax0,az0,ax1,az0); netWall(ax0,az0,ax0,az1); netWall(ax1,az0,ax1,az1);
+netWall(ax0,az1,8.5,az1); netWall(11.5,az1,ax1,az1);   // back net with a 3' entry gap facing the Tokyo Dome aisle
 // net roof
 const roofNet = new THREE.Mesh(new THREE.PlaneGeometry(ax1-ax0, az1-az0), netM);
 roofNet.rotation.x = -Math.PI/2; roofNet.position.set((ax0+ax1)/2, ah, (az0+az1)/2); groups.net.add(roofNet);
@@ -222,6 +217,7 @@ barSet(2.5, 25); barSet(2.5, 34); barSet(17.5, 25); barSet(17.5, 34);
 label('High-top tables + bar stools', 2.5, 5.6, 29.5, {size:0.75});
 label('High-top tables + bar stools', 17.5, 5.6, 29.5, {size:0.75});
 label('Netted demo arena\n10\' wide × 19\' · net walls + roof', 10, ah+2.6, 30, {size:0.9});
+label('Arena entry ↓ (from back aisle)', 10, 4.2, 40.6, {size:0.75, color:'#ffffff', bg:'rgba(31,61,24,0.92)'});
 label('W1359 · Gel Blaster Nexus Arena · 20\' × 40\'', 10, 13.5, 20, {size:1.15, color:'#ffffff', bg:'rgba(31,61,24,0.92)'});
 
 // W1359 power drop: center (10, 20)
@@ -317,7 +313,7 @@ const views = {
   w1359:    {t:[10,4,20], r:62, th:-0.55, ph:0.9},
   w1455:    {t:[40,10,50], r:62, th:-0.6, ph:1.0},
   top:      {t:[25,0,30], r:150, th:0, ph:0.09},
-  aisle:    {t:[10,5,-2], r:48, th:0.35, ph:1.25},
+  aisle:    {t:[10,4,6], r:50, th:0.35, ph:1.2},
 };
 let anim = null;
 function goView(k){ const v = views[k]; const from = {t:target.clone(), r:radius, th:theta, ph:phi}; const to = {t:new THREE.Vector3(...v.t), r:v.r, th:v.th, ph:v.ph}; anim = {from, to, t0:performance.now(), dur:900};
