@@ -49,6 +49,7 @@ button.on{background:#111827;color:#fff;border-color:#111827}
     <span class="sw" style="background:#7c3aed"></span><span>Ring sign, 20' dia, top at 25'</span>
     <span class="sw" style="background:#dc2626"></span><span>OCCC power drops (120V 20A)</span>
     <span class="sw" style="background:#1e40af"></span><span>Smart City internet drop</span>
+    <span class="sw" style="background:#bcd3ea"></span><span>Aisles (right + back of W1359)</span>
     <span class="sw" style="background:#e7e3d6"></span><span>Neighboring booths</span>
   </div>
   </div>
@@ -137,9 +138,11 @@ const nMat = mat(0xe7e3d6), nH = 3;
   ['W1451', 30,61.5, 10,3.5],
   ['W1552', 40,61.5, 10,3.5],
 ].forEach(([n,x,z,w,d])=>{ box(w, nH, d, x, 0, z, nMat, groups.neighbors); label(n, x+w/2, nH+1.6, z+d/2, {size:0.75, color:'#6b7280', parent:groups.neighbors}); });
-label('AISLE', 25, 0.6, 15, {size:0.7, color:'#9aa3ad', bg:'rgba(255,255,255,0)', parent:groups.neighbors});
-label('AISLE', 40, 0.6, 35, {size:0.7, color:'#9aa3ad', bg:'rgba(255,255,255,0)', parent:groups.neighbors});
-label('AISLE — FRONT', 10, 0.6, -0.8, {size:0.7, color:'#9aa3ad', bg:'rgba(255,255,255,0)', parent:groups.neighbors});
+// aisles: right side of W1359 (x 20–30) and bottom/back (z 40–50)
+const aisleM = new THREE.MeshStandardMaterial({color:0xbcd3ea, roughness:1});
+[[20,-6,10,68],[-10,40,30,10]].forEach(([x,z,w,d])=>{ const a = new THREE.Mesh(new THREE.PlaneGeometry(w,d), aisleM); a.rotation.x = -Math.PI/2; a.position.set(x+w/2, 0.02, z+d/2); a.receiveShadow = true; groups.neighbors.add(a); });
+label('AISLE', 25, 1.2, 18, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
+label('AISLE', 6, 1.2, 45, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
 
 // ---------- W1359 arena booth (20 x 40) ----------
 const turfA = turfTexture(); turfA.repeat.set(4, 8);
