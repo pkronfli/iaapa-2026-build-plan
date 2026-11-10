@@ -49,7 +49,8 @@ button.on{background:#111827;color:#fff;border-color:#111827}
     <span class="sw" style="background:#7c3aed"></span><span>Gel Blaster NEXUS drum sign, 20' dia, top at 25'</span>
     <span class="sw" style="background:#dc2626"></span><span>OCCC power drops (120V 20A)</span>
     <span class="sw" style="background:#1e40af"></span><span>Smart City internet drop</span>
-    <span class="sw" style="background:#bcd3ea"></span><span>Aisles (right + back of W1359)</span>
+    <span class="sw" style="background:#bcd3ea"></span><span>Aisles on all 4 sides of W1359</span>
+    <span class="sw" style="background:#c6f432"></span><span>Arena entrance + queue in the front aisle</span>
     <span class="sw" style="background:#e7e3d6"></span><span>Neighboring booths</span>
   </div>
   </div>
@@ -129,20 +130,22 @@ const grid = new THREE.GridHelper(200, 40, 0xc5cbd3, 0xc5cbd3); grid.position.se
 // ---------- neighbors ----------
 const nMat = mat(0xe7e3d6), nH = 3;
 [
-  ['Nethercraft', 0,-5, 20,4],
-  ['W1263\nBlack Light Unity', -9.5,0, 8.5,19],
-  ['W1259', -9.5,20, 8.5,20],
+  ['W1369 / W1468\nNethercraft', 0,-14, 20,4],
+  ['W1263\nBlack Light Unity', -18.5,0, 8.5,19],
+  ['W1259', -18.5,20, 8.5,20],
   ['W1461\nHD SportSuite', 30,0, 20,30],
   ['W1353\nTokyo Dome', 0,50, 20,12],
   ['W1553\nDextr AI', 60,40, 11,20],
   ['W1451', 30,61.5, 10,3.5],
   ['W1552', 40,61.5, 10,3.5],
 ].forEach(([n,x,z,w,d])=>{ box(w, nH, d, x, 0, z, nMat, groups.neighbors); label(n, x+w/2, nH+1.6, z+d/2, {size:0.75, color:'#6b7280', parent:groups.neighbors}); });
-// aisles: right side of W1359 (x 20–30) and bottom/back (z 40–50)
+// aisles on all four sides of W1359 (island): front x0-20/z-10–0, left x-10–0, right x20–30, back z40–50
 const aisleM = new THREE.MeshStandardMaterial({color:0xbcd3ea, roughness:1});
-[[20,-6,10,68],[-10,40,30,10]].forEach(([x,z,w,d])=>{ const a = new THREE.Mesh(new THREE.PlaneGeometry(w,d), aisleM); a.rotation.x = -Math.PI/2; a.position.set(x+w/2, 0.02, z+d/2); a.receiveShadow = true; groups.neighbors.add(a); });
+[[-10,-10,40,10],[-10,0,10,40],[20,0,10,62],[-10,40,30,10]].forEach(([x,z,w,d])=>{ const a = new THREE.Mesh(new THREE.PlaneGeometry(w,d), aisleM); a.rotation.x = -Math.PI/2; a.position.set(x+w/2, 0.02, z+d/2); a.receiveShadow = true; groups.neighbors.add(a); });
 label('AISLE', 25, 1.2, 18, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
 label('AISLE', 6, 1.2, 45, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
+label('AISLE', -5, 1.2, 20, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
+label('FRONT AISLE', 3, 1.2, -8, {size:1.1, color:'#1e3a8a', bg:'rgba(255,255,255,0.85)', parent:groups.neighbors});
 
 // ---------- W1359 arena booth (20 x 40) ----------
 const turfA = turfTexture(); turfA.repeat.set(4, 8);
@@ -150,13 +153,23 @@ box(20, 0.15, 40, 0, 0, 0, mat(0xffffff, {map:turfA}));
 const edge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(20, 0.2, 40)), new THREE.LineBasicMaterial({color:0x1f3d18}));
 edge.position.set(10, 0.1, 20); scene.add(edge);
 
-// check-in counter + podium, stanchion queue
+// check-in counter just inside the front edge; entrance + queue line out in the front (top) aisle
 const counter = mat(0x2b2f36), wood = mat(0xb07a46);
-box(8, 3.5, 2, 6, 0, 4, counter);
-box(8.4, 0.2, 2.4, 5.8, 3.5, 3.8, wood);
-label('Check-in + queue', 10, 6.2, 3, {size:0.9});
+box(7, 3.5, 2, 1, 0, 1.5, counter);
+box(7.4, 0.2, 2.4, 0.8, 3.5, 1.3, wood);
+label('Check-in', 4.5, 6, 2.5, {size:0.85});
+// entrance arch at the top edge, center
+const archM = mat(0x111418);
+box(0.5, 9, 0.5, 8, 0, -0.3, archM); box(0.5, 9, 0.5, 11.5, 0, -0.3, archM); box(4, 1.4, 0.5, 8, 8, -0.3, mat(0xc6f432, {emissive:0x8bbf1c, emissiveIntensity:0.5}));
+label('ARENA ENTRANCE', 9.9, 11.2, -0.1, {size:1.0, color:'#111418', bg:'rgba(198,244,50,0.95)'});
+// stanchion queue in the front aisle (two lanes, z -1 → -7)
 const postM = mat(0x111111, {metalness:0.6, roughness:0.35}), beltM = mat(0x1d1d1d);
-for (let i=0;i<5;i++){ const x = 2 + i*4; [1.2, 2.8].forEach(z=>{ const p = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3,12), postM); p.position.set(x, 1.65, z); p.castShadow = true; scene.add(p); const b = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.15,16), postM); b.position.set(x,0.22,z); scene.add(b); if (i<4){ box(4, 0.15, 0.05, x, 2.9, z-0.025, beltM); } }); }
+function post(x,z){ const p = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.12,3,12), postM); p.position.set(x, 1.65, z); p.castShadow = true; scene.add(p); const b = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.15,16), postM); b.position.set(x,0.22,z); scene.add(b); }
+function belt(x1,z1,x2,z2){ const len = Math.hypot(x2-x1,z2-z1); const m = new THREE.Mesh(new THREE.BoxGeometry(len, 0.15, 0.05), beltM); m.position.set((x1+x2)/2, 2.9, (z1+z2)/2); m.rotation.y = -Math.atan2(z2-z1, x2-x1); scene.add(m); }
+const qx = [6, 9.75, 13.5], qz = [-1, -4, -7];
+qx.forEach(x=>qz.forEach(z=>post(x,z)));
+qz.forEach(z=>{ belt(6,z,9.75,z); }); belt(6,-1,6,-7); belt(13.5,-1,13.5,-7); belt(9.75,-4,9.75,-7);
+label('Queue line', 9.75, 5.2, -5, {size:0.8});
 
 // shooting bays: 6' W x 12'6" D x 8'3" H
 const bayFrame = mat(0x2a2a2a, {metalness:0.4, roughness:0.5}), bayPanel = mat(0xf0a07e, {roughness:0.7}), screen = mat(0x0b1220, {emissive:0x1e5bd6, emissiveIntensity:0.35});
@@ -304,7 +317,7 @@ const views = {
   w1359:    {t:[10,4,20], r:62, th:-0.55, ph:0.9},
   w1455:    {t:[40,10,50], r:62, th:-0.6, ph:1.0},
   top:      {t:[25,0,30], r:150, th:0, ph:0.09},
-  aisle:    {t:[25,6,25], r:55, th:0.9, ph:1.32},
+  aisle:    {t:[10,5,-2], r:48, th:0.35, ph:1.25},
 };
 let anim = null;
 function goView(k){ const v = views[k]; const from = {t:target.clone(), r:radius, th:theta, ph:phi}; const to = {t:new THREE.Vector3(...v.t), r:v.r, th:v.th, ph:v.ph}; anim = {from, to, t0:performance.now(), dur:900};
