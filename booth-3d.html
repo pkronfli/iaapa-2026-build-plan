@@ -25,6 +25,11 @@ button.on{background:#111827;color:#fff;border-color:#111827}
   <h1>IAAPA 2026 · 3D Booth Layout</h1>
   <div class="sub">OCCC West Hall · W1359 arena (20×40) + W1455 GoPlay HQ (20×20) · 1 grid square = 5 ft</div>
   <div class="body">
+  <div class="row"><span class="lbl">Sign location</span>
+    <button data-sign="hq" class="on">A · Over GoPlay HQ</button>
+    <button data-sign="arena">B · Over the arena</button>
+    <span id="signNote" style="font-size:12px;color:#6b7280;width:100%"></span>
+  </div>
   <div class="row"><span class="lbl">Views</span>
     <button data-view="overview" class="on">Overview</button>
     <button data-view="w1359">W1359 Arena</button>
@@ -276,9 +281,9 @@ const glow = new THREE.PointLight(0xd8ff4a, 0.6, 30); glow.position.set(0, -3, 0
 const rot = new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.6,1.4,20), mat(0x9aa0a6, {metalness:0.7, roughness:0.3}));
 rot.position.set(0, 7, 0); signG.add(rot);
 for (let i=0;i<10;i++){ const a = i/10*Math.PI*2; const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,6.3,0), new THREE.Vector3(Math.cos(a)*10, 2, Math.sin(a)*10)]); signG.add(new THREE.Line(g, new THREE.LineBasicMaterial({color:0x8a8f96}))); }
-const cable = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(40, 30.7, 50), new THREE.Vector3(40, 60, 50)]);
-groups.sign.parent.add(new THREE.Line(cable, new THREE.LineBasicMaterial({color:0x777777})));
-label('Gel Blaster NEXUS drum sign\n20\' dia × 4\' · top at 25\' · lit by 114 LED bulbs', 40, 32, 50, {size:0.95, color:'#ffffff', bg:'rgba(124,58,237,0.92)'});
+const cable = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 7.7, 0), new THREE.Vector3(0, 37, 0)]);
+signG.add(new THREE.Line(cable, new THREE.LineBasicMaterial({color:0x777777})));
+const signLabel = label('Gel Blaster NEXUS drum sign\n20\' dia × 4\' · top at 25\' · lit by 114 LED bulbs', 40, 32, 50, {size:0.95, color:'#ffffff', bg:'rgba(124,58,237,0.92)'});
 const signLabelRef = groups.labels.children[groups.labels.children.length-1];
 
 // ---------- dimensions on floor ----------
@@ -319,6 +324,17 @@ let anim = null;
 function goView(k){ const v = views[k]; const from = {t:target.clone(), r:radius, th:theta, ph:phi}; const to = {t:new THREE.Vector3(...v.t), r:v.r, th:v.th, ph:v.ph}; anim = {from, to, t0:performance.now(), dur:900};
   document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('on', b.dataset.view===k)); }
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click', ()=>{ stopTour(); goView(b.dataset.view); }));
+// sign location options: A = over GoPlay HQ (W1455), B = over the W1359 netted demo arena
+const SIGN_SPOTS = {hq:{x:40, z:50, note:'Option A · over GoPlay HQ (W1455)'}, arena:{x:10, z:30, note:'Option B · over the W1359 demo arena'}};
+function setSignSpot(k){
+  const sp = SIGN_SPOTS[k] || SIGN_SPOTS.hq;
+  signG.position.set(sp.x, 23, sp.z); signLabel.position.set(sp.x, 32, sp.z);
+  document.querySelectorAll('[data-sign]').forEach(b=>b.classList.toggle('on', b.dataset.sign===k));
+  const n = document.getElementById('signNote'); if (n) n.textContent = sp.note;
+  try { const u = new URL(location.href); u.searchParams.set('sign', k); history.replaceState(null, '', u); } catch(e){}
+}
+document.querySelectorAll('[data-sign]').forEach(b=>b.addEventListener('click', ()=>setSignSpot(b.dataset.sign)));
+setSignSpot(new URLSearchParams(location.search).get('sign') === 'arena' ? 'arena' : 'hq');
 document.querySelectorAll('[data-toggle]').forEach(b=>b.addEventListener('click', ()=>{ const g = groups[b.dataset.toggle]; g.visible = !g.visible; b.classList.toggle('on', g.visible); }));
 let spin = true; const spinBtn = document.getElementById('spin'); spinBtn.addEventListener('click', ()=>{ spin = !spin; spinBtn.classList.toggle('on', spin); });
 let tour = false; const tourBtn = document.getElementById('tour');
